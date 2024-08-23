@@ -61,7 +61,7 @@ function MainNav() {
           to={to}
           key={to}
           className={({ isActive }) =>
-            `flex items-center gap-3 rounded-md px-6 py-3 font-semibold hover:bg-gray-100 ${isActive ? "bg-gray-100 text-primary-800" : "text-gray-900"}`
+            `tracking-0.1 flex items-center gap-3 rounded-md px-6 py-3 hover:bg-gray-100 ${isActive ? "bg-gray-100 font-semibold text-primary-800" : "text-gray-900"}`
           }
         >
           <span className="text-gray-600">{icon}</span>

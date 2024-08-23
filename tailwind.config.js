@@ -10,6 +10,10 @@ export default {
         Roboto: ['"Roboto"', ...defaultTheme.fontFamily.sans],
       },
 
+      letterSpacing: {
+        0.1: "0.1px",
+      },
+
       colors: {
         gray: {
           100: "#FAFAFB",

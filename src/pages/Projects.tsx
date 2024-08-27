@@ -1,5 +1,23 @@
+import CustomSelect from "../ui/CustomSelect";
+
 function Projects() {
-  return <div>Projects</div>;
+  return (
+    <div className="flex flex-col gap-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold tracking-0.1 text-gray-900">
+          Projects
+        </h1>
+
+        <CustomSelect
+          options={[
+            { value: "project-name", label: "Project Name" },
+            { value: "project-type", label: "Project Type" },
+            { value: "due-date", label: "Due Date" },
+          ]}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default Projects;

@@ -7,7 +7,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['"Poppins"', ...defaultTheme.fontFamily.sans],
-        Roboto: ['"Roboto"', ...defaultTheme.fontFamily.sans],
+        roboto: ['"Roboto"', ...defaultTheme.fontFamily.sans],
       },
 
       letterSpacing: {

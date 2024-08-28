@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -5,7 +6,6 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { Filter } from "iconsax-react";
-import { useState } from "react";
 import { iconColor } from "../styles/GlobalStyles";
 
 interface Option {

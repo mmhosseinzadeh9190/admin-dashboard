@@ -7,7 +7,7 @@ import {
   Messages3,
   Setting2,
 } from "iconsax-react";
-import { NavLink } from "react-router-dom";
+import NavItem from "./NavItem";
 
 const navItems = [
   {
@@ -47,33 +47,19 @@ const navItems = [
   },
 ];
 
-interface RenderNavItem {
-  to: string;
-  icon: JSX.Element;
-  label: string;
-}
-
 function MainNav() {
-  const renderNavItem = ({ to, icon, label }: RenderNavItem) => {
-    return (
-      <li key={to}>
-        <NavLink
-          to={to}
-          key={to}
-          className={({ isActive }) =>
-            `flex items-center gap-3 rounded-md px-6 py-3 tracking-0.1 hover:bg-gray-100 ${isActive ? "bg-gray-100 font-semibold text-primary-800" : "text-gray-900"}`
-          }
-        >
-          <span className="text-gray-600">{icon}</span>
-          <span className="mb-[-1px]">{label}</span>
-        </NavLink>
-      </li>
-    );
-  };
-
   return (
     <nav>
-      <ul className="flex flex-col gap-2">{navItems.map(renderNavItem)}</ul>
+      <ul className="flex flex-col gap-2">
+        {navItems.map((item) => (
+          <NavItem
+            key={item.to}
+            to={item.to}
+            icon={item.icon}
+            label={item.label}
+          />
+        ))}
+      </ul>
     </nav>
   );
 }

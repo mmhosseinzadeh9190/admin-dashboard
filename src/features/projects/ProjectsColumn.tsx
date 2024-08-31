@@ -2,6 +2,7 @@ import ProjectCard from "./ProjectCard";
 import { Add } from "iconsax-react";
 import { iconColor } from "../../styles/GlobalStyles";
 import EmptyState from "./EmptyState";
+import Button from "../../ui/Button";
 
 interface Project {
   id: number;
@@ -37,12 +38,9 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
         <h2 className="font-semibold capitalize tracking-0.1 text-gray-700">
           {status}
         </h2>
-        <img
-          src="/src/assets/ellipsis.svg"
-          alt="Options"
-          role="button"
-          className="select-none"
-        />
+        <Button className="select-none">
+          <img src="/src/assets/ellipsis.svg" alt="Options" />
+        </Button>
       </div>
       <div
         className={`px-1.5 ${filteredProjects?.length !== 0 ? "overflow-y-scroll" : ""}`}
@@ -57,13 +55,12 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
           )}
         </div>
       </div>
-      <div
+      <Button
         className={`flex justify-center border-t border-gray-200 bg-white py-2 ${filteredProjects?.length !== 0 ? "mt-auto" : ""}`}
-        role="button"
         aria-label="add button"
       >
         <Add size="32" color={iconColor} variant="Linear" />
-      </div>
+      </Button>
     </div>
   );
 }

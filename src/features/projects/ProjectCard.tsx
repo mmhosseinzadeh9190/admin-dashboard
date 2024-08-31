@@ -6,6 +6,7 @@ import Spinner from "../../ui/Spinner";
 import { daysUntil } from "../../utils/helpers";
 import { getUsers } from "../../services/apiUsers";
 import ProgressBar from "../../ui/ProgressBar";
+import Button from "../../ui/Button";
 
 interface Project {
   id: number;
@@ -81,12 +82,9 @@ function ProjectCard({ project }: ProjectCardProps) {
         >
           {project.name}
         </h3>
-        <img
-          src="/src/assets/ellipsis.svg"
-          alt="Options"
-          role="button"
-          className="select-none"
-        />
+        <Button className="select-none">
+          <img src="/src/assets/ellipsis.svg" alt="Options" />
+        </Button>
       </div>
 
       <>

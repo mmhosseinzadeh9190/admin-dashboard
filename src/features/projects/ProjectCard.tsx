@@ -56,9 +56,9 @@ function ProjectCard({ project }: ProjectCardProps) {
   const daysLeft = daysUntil(project.deadline!);
   const deadlineText = daysLeft < 0 ? "days past" : "days left";
 
-  let textColor = "text-gray-600",
+  let textColor = "text-gray-700",
     bgColor = "bg-gray-200",
-    iconClockColor = "#92929D";
+    iconClockColor = "#696974";
 
   if (daysLeft <= 7) {
     textColor = "text-warning-600";

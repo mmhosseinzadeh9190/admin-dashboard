@@ -26,13 +26,13 @@ function CustomCalendar() {
 
       let classNames = "font-roboto text-sm tracking-0.1";
 
-      if (!isCompleted) {
-        classNames += " bg-error-50 text-error-600";
+      if (isCompleted) {
+        classNames += " bg-success-50 text-success-600";
       } else {
         if (eventDate < today) {
-          classNames += " bg-gray-200 text-gray-600";
+          classNames += " bg-error-50 text-error-600";
         } else {
-          classNames += " bg-success-50 text-success-600";
+          classNames += " bg-gray-200 text-gray-700";
         }
       }
 

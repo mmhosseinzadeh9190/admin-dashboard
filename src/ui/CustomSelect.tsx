@@ -35,7 +35,7 @@ function CustomSelect({ options }: CustomSelectProps) {
         <ListboxOptions
           anchor="bottom"
           transition
-          className="w-[var(--button-width)] rounded-[0_0_10px_10px] border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 [--anchor-gap:var(--spacing-1)]"
+          className="mt-1 w-[var(--button-width)] rounded-[10px] border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 [--anchor-gap:var(--spacing-1)]"
         >
           {options.map((option) => (
             <ListboxOption

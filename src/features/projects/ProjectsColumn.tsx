@@ -21,7 +21,7 @@ interface Project {
 }
 
 interface ProjectsColumnProps {
-  status: string;
+  status: "done" | "pending" | "run";
   projects: Project[];
 }
 

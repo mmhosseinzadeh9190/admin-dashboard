@@ -60,16 +60,16 @@ function ProjectCard({ project }: ProjectCardProps) {
     bgColor = "bg-gray-200",
     iconClockColor = "#92929D";
 
-  if (daysLeft <= 3) {
-    textColor = "text-error-500";
-    bgColor = "bg-error-50";
-    iconClockColor = "#ff3333";
+  if (daysLeft <= 7) {
+    textColor = "text-warning-600";
+    bgColor = "bg-warning-50";
+    iconClockColor = "#FF7F00";
   }
 
-  if (daysLeft <= 7) {
-    textColor = "text-warning-500";
-    bgColor = "bg-warning-50";
-    iconClockColor = "#FF8C00";
+  if (daysLeft <= 3) {
+    textColor = "text-error-600";
+    bgColor = "bg-error-50";
+    iconClockColor = "#ed1515";
   }
 
   return (

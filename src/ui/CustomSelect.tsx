@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -7,6 +7,7 @@ import {
 } from "@headlessui/react";
 import { Filter } from "iconsax-react";
 import { iconColor } from "../styles/GlobalStyles";
+import { useSearchParams } from "react-router-dom";
 
 interface Option {
   value: string;
@@ -18,11 +19,28 @@ interface CustomSelectProps {
 }
 
 function CustomSelect({ options }: CustomSelectProps) {
-  const [selected, setSelected] = useState(options[0]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selected, setSelected] = useState<Option>(options[0]);
+  const filterValue = searchParams.get("sortBy");
+
+  useEffect(() => {
+    const filterOption = options.find((option) => option.value === filterValue);
+    if (filterOption) {
+      setSelected(filterOption);
+    } else {
+      setSelected(options[0]);
+    }
+  }, [filterValue, options]);
+
+  const handleChange = (option: Option) => {
+    setSelected(option);
+    searchParams.set("sortBy", option.value);
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className="w-40">
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={handleChange}>
         <ListboxButton className="relative block w-full rounded-[10px] bg-white py-2 pl-3 pr-8 text-left font-roboto text-sm tracking-0.1 text-gray-800 shadow-sm">
           {selected.label}
           <span

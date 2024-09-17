@@ -33,7 +33,7 @@ function ActivityCard({ activity }: ActivityCardProps) {
     isLoading: usersIsLoading,
     error: usersError,
   } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["users"],
     queryFn: getUsers,
   });
 

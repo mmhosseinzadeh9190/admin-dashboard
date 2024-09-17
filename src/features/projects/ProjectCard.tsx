@@ -43,7 +43,7 @@ function ProjectCard({ project }: ProjectCardProps) {
     isLoading: usersIsLoading,
     error: usersError,
   } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["users"],
     queryFn: getUsers,
   });
 

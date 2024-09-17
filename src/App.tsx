@@ -10,8 +10,11 @@ import Activity from "./pages/Activity";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import PasswordRecovery from "./pages/PasswordRecovery";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./ui/AppLayout";
+import CustomizedToaster from "./ui/CustomizedToaster";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +31,13 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="messages" element={<Messages />} />
@@ -40,9 +49,12 @@ function App() {
 
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
+          <Route path="passwordRecovery" element={<PasswordRecovery />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
+
+      <CustomizedToaster />
     </QueryClientProvider>
   );
 }

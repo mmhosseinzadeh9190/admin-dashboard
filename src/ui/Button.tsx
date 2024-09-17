@@ -5,6 +5,7 @@ interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   ariaLabel?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
   children: React.ReactNode;
 }
 
@@ -13,6 +14,7 @@ function Button({
   onClick,
   ariaLabel,
   type = "button",
+  disabled,
   children,
 }: ButtonProps) {
   return (
@@ -21,6 +23,7 @@ function Button({
       onClick={onClick}
       aria-label={ariaLabel}
       type={type}
+      disabled={disabled}
     >
       {children}
     </button>

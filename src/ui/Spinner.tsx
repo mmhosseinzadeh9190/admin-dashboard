@@ -1,13 +1,25 @@
 import "ldrs/lineSpinner";
 
-function Spinner() {
+interface SpinnerProps {
+  size?: string;
+  stroke?: string;
+  speed?: string;
+  color?: string;
+}
+
+function Spinner({
+  size = "40",
+  stroke = "3",
+  speed = "0.5",
+  color = "#6A0DAD",
+}: SpinnerProps) {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex h-full items-center justify-center">
       <l-line-spinner
-        size="50"
-        stroke="3.5"
-        speed="1"
-        color="#6A0DAD"
+        size={size}
+        stroke={stroke}
+        speed={speed}
+        color={color}
       ></l-line-spinner>
     </div>
   );

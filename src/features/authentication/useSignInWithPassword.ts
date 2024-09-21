@@ -18,14 +18,19 @@ export function useSignInWithPassword() {
     onSuccess(data) {
       navigate("/dashboard");
       queryClient.setQueryData(["user"], data.user);
-      console.log("User successfully logged in", data);
+      toast.success("Login was successful!");
     },
     onError: (error) => {
       console.error(
         "Error logging in with Email and Password: ",
         error.message,
       );
-      toast.error("Provided email or password are incorrect");
+      if (error.message === "Failed to fetch") {
+        toast.error("Unable to connect. Please try again later.");
+        return;
+      } else {
+        toast.error("Provided email or password are incorrect");
+      }
     },
   });
 

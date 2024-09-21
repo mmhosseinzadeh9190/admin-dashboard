@@ -5,14 +5,12 @@ import toast from "react-hot-toast";
 export function useSignInWithTwitter() {
   const { mutate: signInWithTwitter, isPending } = useMutation({
     mutationFn: () => signInWithTwitterApi(),
-    onSuccess(data) {
-      console.log("User successfully logged in", data);
+    onSuccess() {
+      toast.success("Login was successful!");
     },
     onError: (error) => {
       console.error("Error logging in with Twitter: ", error.message);
-      toast.error(
-        "Login failed. Please ensure your Twitter account is correctly linked.",
-      );
+      toast.error("Login failed. Please try again later.");
     },
   });
 

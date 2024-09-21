@@ -9,16 +9,17 @@ import { Link } from "react-router-dom";
 import { Eye, EyeSlash } from "iconsax-react";
 import { iconColor } from "../styles/GlobalStyles";
 import Spinner from "../ui/Spinner";
+import toast from "react-hot-toast";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [email, setEmail] = useState("mohammadmahdihosseinzadeh68@gmail.com");
-  const [password, setPassword] = useState("HOSSEIN_H.Z.9190");
   const { signInWithPassword, isPending } = useSignInWithPassword();
-  const { signInWithGitHub } = useSignInWithGitHub();
-  const { signInWithTwitter } = useSignInWithTwitter();
   const { signInWithFacebook } = useSignInWithFacebook();
+  const { signInWithTwitter } = useSignInWithTwitter();
+  const { signInWithGitHub } = useSignInWithGitHub();
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("savedEmail");
@@ -49,7 +50,11 @@ function Login() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !password) return;
+
+    if (!email || !password) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
     if (rememberMe) {
       localStorage.setItem("savedEmail", email);
@@ -64,9 +69,9 @@ function Login() {
     <div className="flex h-dvh flex-col items-center justify-center gap-8 bg-gray-100">
       <Logo />
 
-      <div className="flex w-max flex-col gap-4 rounded-xl bg-white px-6 py-8 shadow-sm">
-        <h1 className="mb-4 text-center text-lg font-semibold text-gray-900">
-          Login to your account
+      <div className="flex w-max flex-col gap-4 rounded-xl bg-white p-6 shadow-sm">
+        <h1 className="mb-2 text-center text-lg font-semibold text-gray-900">
+          Log in to your account
         </h1>
 
         <div className="flex flex-wrap gap-4">
@@ -75,7 +80,7 @@ function Login() {
               type="submit"
               onClick={handleFacebookLogin}
               disabled={isPending}
-              className="flex w-1/2 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
+              className="flex w-1/2 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
             >
               <img
                 src="/src/assets/facebook.svg"
@@ -90,7 +95,7 @@ function Login() {
               type="submit"
               onClick={handleTwitterLogin}
               disabled={isPending}
-              className="flex w-1/2 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
+              className="flex w-1/2 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
             >
               <img
                 src="/src/assets/twitter.svg"
@@ -106,7 +111,7 @@ function Login() {
             type="submit"
             onClick={handleGitHubLogin}
             disabled={isPending}
-            className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
           >
             <img
               src="/src/assets/github.svg"
@@ -207,7 +212,7 @@ function Login() {
           <Button
             type="submit"
             disabled={isPending}
-            className="w-full rounded-xl bg-primary-800 px-4 py-3 text-center text-sm font-semibold text-gray-100 hover:bg-primary-900 disabled:cursor-not-allowed"
+            className="w-full rounded-xl bg-primary-800 py-3 text-center text-sm font-semibold text-gray-100 hover:bg-primary-900 disabled:cursor-not-allowed"
           >
             {!isPending ? (
               "Log in to your account"

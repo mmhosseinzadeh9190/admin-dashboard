@@ -1,6 +1,9 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Main from "./Main";
+import insertUser from "../features/authentication/insertUser";
+
+insertUser();
 
 function AppLayout() {
   return (

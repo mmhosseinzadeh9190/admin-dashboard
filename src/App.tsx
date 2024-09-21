@@ -9,7 +9,7 @@ import Schedule from "./pages/Schedule";
 import Activity from "./pages/Activity";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import SignUp from "./pages/SignUp";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./ui/AppLayout";
@@ -48,7 +48,7 @@ function App() {
           </Route>
 
           <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          <Route path="signup" element={<SignUp />} />
           <Route path="passwordRecovery" element={<PasswordRecovery />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

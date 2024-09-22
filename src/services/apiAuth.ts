@@ -30,15 +30,10 @@ export const signUpWithPassword = async ({
   password,
   name,
 }: signUpWithPasswordProps) => {
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
-  });
-
-  if (error) throw new Error(error.message);
-
-  const { data: updateUserData, error: updateUserError } =
-    await supabase.auth.updateUser({
+    options: {
       data: {
         name: name,
         avatar_url:
@@ -46,27 +41,28 @@ export const signUpWithPassword = async ({
         is_online: false,
         user_roles: ["user"],
       },
-    });
+    },
+  });
 
-  if (updateUserError) throw new Error(updateUserError.message);
+  if (error) throw new Error(error.message);
 
   const { error: insertUserError } = await supabase.from("users").insert([
     {
-      id: updateUserData.user.id,
-      name: updateUserData.user.user_metadata.name,
-      email: updateUserData.user.email,
-      avatar_url: updateUserData.user.user_metadata.avatar_url,
-      user_roles: updateUserData.user.user_metadata.user_roles,
-      is_online: updateUserData.user.user_metadata.is_online,
-      last_login: updateUserData.user.last_sign_in_at,
-      created_at: updateUserData.user.created_at,
-      updated_at: updateUserData.user.updated_at,
+      id: data.user?.id,
+      name: data.user?.user_metadata.name,
+      email: data.user?.email,
+      avatar_url: data.user?.user_metadata.avatar_url,
+      user_roles: data.user?.user_metadata.user_roles,
+      is_online: data.user?.user_metadata.is_online,
+      last_login: data.user?.last_sign_in_at,
+      created_at: data.user?.created_at,
+      updated_at: data.user?.updated_at,
     },
   ]);
 
   if (insertUserError) throw new Error(insertUserError.message);
 
-  return updateUserData;
+  return data;
 };
 
 export const signInWithFacebook = async () => {
@@ -117,4 +113,10 @@ export const getCurrentUser = async () => {
   if (error) throw new Error(error.message);
 
   return data?.user;
+};
+
+export const logout = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) throw new Error(error.message);
 };

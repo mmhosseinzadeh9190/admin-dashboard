@@ -3,11 +3,11 @@ import {
   Clock,
   Code1,
   Element3,
-  Logout,
   Messages3,
   Setting2,
 } from "iconsax-react";
 import NavItem from "./NavItem";
+import Logout from "../features/authentication/Logout";
 
 const navItems = [
   {
@@ -40,17 +40,12 @@ const navItems = [
     icon: <Setting2 size="24" variant="Bulk" />,
     label: "Settings",
   },
-  {
-    to: "/login",
-    icon: <Logout size="24" variant="Bulk" />,
-    label: "Logout",
-  },
 ];
 
 function MainNav() {
   return (
-    <nav>
-      <ul className="flex flex-col gap-2">
+    <nav className="flex-grow">
+      <ul className="flex h-full flex-col gap-2">
         {navItems.map((item) => (
           <NavItem
             key={item.to}
@@ -59,6 +54,7 @@ function MainNav() {
             label={item.label}
           />
         ))}
+        <Logout />
       </ul>
     </nav>
   );

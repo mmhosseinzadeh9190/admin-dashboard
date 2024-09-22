@@ -16,7 +16,7 @@ function NavItem({ to, icon, label }: NavItemProps) {
         }
       >
         <span className="text-gray-600">{icon}</span>
-        <span className="mb-[-1px]">{label}</span>
+        <span className="-mb-px">{label}</span>
       </NavLink>
     </li>
   );

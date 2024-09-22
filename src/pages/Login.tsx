@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import useSignInWithFacebook from "../features/authentication/useSignInWithFacebook";
-import useSignInWithTwitter from "../features/authentication/useSignInWithTwitter";
-import useSignInWithGitHub from "../features/authentication/useSignInWithGitHub";
-import useSignInWithPassword from "../features/authentication/useSignInWithPassword";
+import { useSignInWithFacebook } from "../features/authentication/useSignInWithFacebook";
+import { useSignInWithTwitter } from "../features/authentication/useSignInWithTwitter";
+import { useSignInWithGitHub } from "../features/authentication/useSignInWithGitHub";
+import { useSignInWithPassword } from "../features/authentication/useSignInWithPassword";
 import Logo from "../ui/Logo";
 import Button from "../ui/Button";
 import { Link } from "react-router-dom";

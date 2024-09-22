@@ -13,5 +13,3 @@ export function useSignInWithFacebook() {
 
   return { signInWithFacebook, isPending };
 }
-
-export default useSignInWithFacebook;

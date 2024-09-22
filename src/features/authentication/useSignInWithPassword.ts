@@ -16,8 +16,8 @@ export function useSignInWithPassword() {
     mutationFn: ({ email, password }: mutationFnProps) =>
       signInWithPasswordApi({ email, password }),
     onSuccess(data) {
-      navigate("/dashboard");
       queryClient.setQueryData(["user"], data.user);
+      navigate("/dashboard");
       toast.success("Login was successful!");
     },
     onError: (error) => {
@@ -29,12 +29,10 @@ export function useSignInWithPassword() {
         toast.error("Unable to connect. Please try again later.");
         return;
       } else {
-        toast.error("Provided email or password are incorrect");
+        toast.error("Provided email or password are incorrect.");
       }
     },
   });
 
   return { signInWithPassword, isPending };
 }
-
-export default useSignInWithPassword;

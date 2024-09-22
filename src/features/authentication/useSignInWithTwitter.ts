@@ -13,5 +13,3 @@ export function useSignInWithTwitter() {
 
   return { signInWithTwitter, isPending };
 }
-
-export default useSignInWithTwitter;

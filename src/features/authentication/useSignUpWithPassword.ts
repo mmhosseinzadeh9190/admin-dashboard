@@ -17,8 +17,8 @@ export function useSignUpWithPassword() {
     mutationFn: ({ email, password, name }: mutationFnProps) =>
       signUpWithPasswordApi({ email, password, name }),
     onSuccess(data) {
-      navigate("/dashboard");
       queryClient.setQueryData(["user"], data.user);
+      navigate("/dashboard");
       toast.success("Registration was successful!");
     },
     onError: (error) => {
@@ -41,5 +41,3 @@ export function useSignUpWithPassword() {
 
   return { signUpWithPassword, isPending };
 }
-
-export default useSignUpWithPassword;

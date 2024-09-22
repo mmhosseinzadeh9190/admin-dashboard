@@ -13,5 +13,3 @@ export function useSignInWithGitHub() {
 
   return { signInWithGitHub, isPending };
 }
-
-export default useSignInWithGitHub;

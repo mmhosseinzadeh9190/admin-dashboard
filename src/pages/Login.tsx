@@ -4,7 +4,7 @@ import { useSignInWithTwitter } from "../features/authentication/useSignInWithTw
 import { useSignInWithGitHub } from "../features/authentication/useSignInWithGitHub";
 import { useSignInWithPassword } from "../features/authentication/useSignInWithPassword";
 import Logo from "../ui/Logo";
-import SocialLoginButtons from "../features/authentication/SocialLoginButtons";
+import SocialAuthButtons from "../features/authentication/SocialAuthButtons";
 import LoginForm from "../features/authentication/LoginForm";
 import toast from "react-hot-toast";
 
@@ -66,11 +66,12 @@ function Login() {
           Log in to your account
         </h1>
 
-        <SocialLoginButtons
+        <SocialAuthButtons
           isPending={isPending}
-          handleFacebookLogin={handleFacebookLogin}
-          handleTwitterLogin={handleTwitterLogin}
-          handleGitHubLogin={handleGitHubLogin}
+          handleFacebookAuth={handleFacebookLogin}
+          handleTwitterAuth={handleTwitterLogin}
+          handleGitHubAuth={handleGitHubLogin}
+          actionType="login"
         />
 
         <div className="flex items-center">

@@ -1,10 +1,10 @@
 import supabase from "./supabase";
 
-interface Schedule {
+export interface Schedule {
   id: number;
   date: string | null;
   task: string | null;
-  assigned_to: number | null;
+  assigned_to: string | null;
   completed: boolean | null;
   project_id: number | null;
 }

@@ -1,13 +1,13 @@
 import supabase from "./supabase";
 
-interface Team {
+export interface Team {
   id: number;
   name: string | null;
   created_at: string | null;
-  leader_id: number | null;
+  leader_id: string | null;
   team_size: number | null;
   members: string[] | null;
-  project_id: number | null;
+  projects_id: string[] | null;
   team_logo: string | null;
 }
 

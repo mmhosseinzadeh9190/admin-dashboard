@@ -1,8 +1,8 @@
 import supabase from "./supabase";
 
-interface Activity {
+export interface Activity {
   id: number;
-  user_id: number | null;
+  user_id: string | null;
   project_id: number | null;
   activity: string | null;
   activity_content: string[] | null;

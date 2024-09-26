@@ -1,16 +1,15 @@
 import supabase from "./supabase";
 
-interface User {
+export interface User {
   id: number;
-  username: string | null;
+  name: string | null;
   email: string | null;
-  password: string | null;
-  profile_picture: string | null;
+  avatar_url: string | null;
+  user_roles: string[] | null;
   is_online: boolean | null;
+  last_login: string | null;
   created_at: string | null;
   updated_at: string | null;
-  roles: string[] | null;
-  last_login: string | null;
 }
 
 export async function getUsers(): Promise<{

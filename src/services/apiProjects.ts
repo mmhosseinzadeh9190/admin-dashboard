@@ -1,6 +1,6 @@
 import supabase from "./supabase";
 
-interface Project {
+export interface Project {
   id: number;
   name: string | null;
   description: string | null;
@@ -8,7 +8,7 @@ interface Project {
   attachments: string[] | null;
   status: string | null;
   deadline: string | null;
-  created_by: number | null;
+  created_by: string | null;
   created_at: string | null;
   updated_at: string | null;
   tags: string[] | null;

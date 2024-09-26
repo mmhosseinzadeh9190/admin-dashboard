@@ -3,23 +3,7 @@ import { Add } from "iconsax-react";
 import { iconColor } from "../../styles/GlobalStyles";
 import EmptyState from "./EmptyState";
 import Button from "../../ui/Button";
-
-interface Project {
-  id: number;
-  name: string | null;
-  description: string | null;
-  tasks: string[] | null;
-  attachments: string[] | null;
-  status: string | null;
-  deadline: string | null;
-  created_by: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  tags: string[] | null;
-  team: number | null;
-  tasks_done: string[] | null;
-}
-
+import { Project } from "../../services/apiProjects";
 interface ProjectsColumnProps {
   status: "done" | "pending" | "run";
   projects: Project[];

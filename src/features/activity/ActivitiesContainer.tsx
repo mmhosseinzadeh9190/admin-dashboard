@@ -1,42 +1,27 @@
 import { useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getActivities } from "../../services/apiActivity";
-import { getProjects } from "../../services/apiProjects";
+import { Activity } from "../../services/apiActivity";
+import { useActivity } from "./useActivity";
+import { useProjects } from "../projects/useProjects";
 import Spinner from "../../ui/Spinner";
 import ActivityGroup from "./ActivityGroup";
 import ActivityGroupByType from "./ActivityGroupByType";
 import ActivityGroupByProject from "./ActivityGroupByProject";
-
-interface Activity {
-  id: number;
-  user_id: number | null;
-  project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
-  timestamp: string | null;
-}
 
 function ActivitiesContainer() {
   const [searchParams] = useSearchParams();
   const filterValue = searchParams.get("sortBy") || "due-date";
 
   const {
-    data: activities,
+    activities,
     isLoading: activitiesIsLoading,
     error: activitiesError,
-  } = useQuery({
-    queryKey: ["activity"],
-    queryFn: getActivities,
-  });
+  } = useActivity();
 
   const {
-    data: projects,
+    projects,
     isLoading: projectsIsLoading,
     error: projectsError,
-  } = useQuery({
-    queryKey: ["project"],
-    queryFn: getProjects,
-  });
+  } = useProjects();
 
   if (activitiesIsLoading || projectsIsLoading) return <Spinner />;
 

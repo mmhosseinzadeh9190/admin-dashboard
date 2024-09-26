@@ -1,51 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
 import { Clock, Paperclip2, TickSquare } from "iconsax-react";
 import { iconColor } from "../../styles/GlobalStyles";
-import { getTeams } from "../../services/apiTeams";
 import Spinner from "../../ui/Spinner";
 import { daysUntil } from "../../utils/helpers";
-import { getUsers } from "../../services/apiUsers";
 import ProgressBar from "../../ui/ProgressBar";
 import Button from "../../ui/Button";
-
-interface Project {
-  id: number;
-  name: string | null;
-  description: string | null;
-  tasks: string[] | null;
-  attachments: string[] | null;
-  status: string | null;
-  deadline: string | null;
-  created_by: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  tags: string[] | null;
-  team: number | null;
-  tasks_done: string[] | null;
-}
+import { Project } from "../../services/apiProjects";
+import { useTeams } from "../dashboard/useTeams";
+import { useUsers } from "../dashboard/useUsers";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
-  const {
-    data: teams,
-    isLoading: teamsIsLoading,
-    error: teamsError,
-  } = useQuery({
-    queryKey: ["team"],
-    queryFn: getTeams,
-  });
+  const { teams, isLoading: teamsIsLoading, error: teamsError } = useTeams();
 
-  const {
-    data: users,
-    isLoading: usersIsLoading,
-    error: usersError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: getUsers,
-  });
+  const { users, isLoading: usersIsLoading, error: usersError } = useUsers();
 
   if (teamsIsLoading || usersIsLoading) return <Spinner />;
 
@@ -134,11 +104,11 @@ function ProjectCard({ project }: ProjectCardProps) {
       <div className="mt-2 flex items-center gap-2.5">
         {users?.data?.map(
           (user) =>
-            teamMembers?.slice(0, 5).includes(user.id) && (
+            teamMembers?.slice(0, 5).includes(String(user.id)) && (
               <img
                 key={user.id}
-                src={user.profile_picture!}
-                alt={user.username!}
+                src={user.avatar_url!}
+                alt={user.name!}
                 className="h-8 w-8 rounded-full object-cover object-center"
               />
             ),

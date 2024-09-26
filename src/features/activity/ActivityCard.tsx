@@ -1,18 +1,8 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getProjects } from "../../services/apiProjects";
-import { getUsers } from "../../services/apiUsers";
 import Spinner from "../../ui/Spinner";
-import { extractTime, isValidImage } from "../../utils/helpers";
-
-interface Activity {
-  id: number;
-  user_id: number | null;
-  project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
-  timestamp: string | null;
-}
+import { addDefaultSrc, extractTime, isValidImage } from "../../utils/helpers";
+import { Activity } from "../../services/apiActivity";
+import { useProjects } from "../projects/useProjects";
+import { useUsers } from "../dashboard/useUsers";
 
 interface ActivityCardProps {
   activity: Activity;
@@ -20,28 +10,14 @@ interface ActivityCardProps {
 
 function ActivityCard({ activity }: ActivityCardProps) {
   const {
-    data: projects,
+    projects,
     isLoading: projectsIsLoading,
     error: projectsError,
-  } = useQuery({
-    queryKey: ["project"],
-    queryFn: getProjects,
-  });
+  } = useProjects();
 
-  const {
-    data: users,
-    isLoading: usersIsLoading,
-    error: usersError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: getUsers,
-  });
+  const { users, isLoading: usersIsLoading, error: usersError } = useUsers();
 
   if (projectsIsLoading || usersIsLoading) return <Spinner />;
-
-  function addDefaultSrc(e: React.SyntheticEvent<HTMLImageElement, Event>) {
-    e.currentTarget.src = "./../../../public/imagePlaceholder.png";
-  }
 
   const project = projects?.data?.find(
     (project) => project.id === activity.project_id,
@@ -49,14 +25,16 @@ function ActivityCard({ activity }: ActivityCardProps) {
 
   const projectName = project ? project.name : "Unnamed Project";
 
-  const user = users?.data?.find((user) => user.id === activity.user_id);
+  const user = users?.data?.find(
+    (user) => String(user.id) === activity.user_id,
+  );
 
-  const username = user ? user.username : "Unknown User";
+  const username = user ? user.name : "Unknown User";
 
   const placeholderImage = "./../../../public/placeholder.png";
 
-  const userPicture = isValidImage(user?.profile_picture!)
-    ? user?.profile_picture
+  const userPicture = isValidImage(user?.avatar_url!)
+    ? user?.avatar_url
     : placeholderImage;
 
   const timeDisplay = activity.timestamp
@@ -128,7 +106,7 @@ function ActivityCard({ activity }: ActivityCardProps) {
                       : "./../../../public/imagePlaceholder.png"
                   }
                   alt={`Uploaded photo ${username}`}
-                  onError={addDefaultSrc}
+                  onError={(e) => addDefaultSrc(e, "avatar")}
                   className="w-44 rounded-lg"
                 />
               ))}

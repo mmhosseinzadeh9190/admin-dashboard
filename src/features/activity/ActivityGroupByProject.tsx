@@ -1,30 +1,7 @@
+import { Activity } from "../../services/apiActivity";
+import { Project } from "../../services/apiProjects";
 import { capitalizeFirstLetter } from "../../utils/helpers";
 import ActivityGroup from "./ActivityGroup";
-
-interface Activity {
-  id: number;
-  user_id: number | null;
-  project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
-  timestamp: string | null;
-}
-
-interface Project {
-  id: number;
-  name: string | null;
-  description: string | null;
-  tasks: string[] | null;
-  attachments: string[] | null;
-  status: string | null;
-  deadline: string | null;
-  created_by: number | null;
-  created_at: string | null;
-  updated_at: string | null;
-  tags: string[] | null;
-  team: number | null;
-  tasks_done: string[] | null;
-}
 
 interface ActivityGroupByProjectProps {
   activities: { data: Activity[] | null; error: string | null };

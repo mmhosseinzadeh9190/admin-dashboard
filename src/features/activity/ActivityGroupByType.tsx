@@ -1,14 +1,6 @@
+import { Activity } from "../../services/apiActivity";
 import { capitalizeFirstLetter } from "../../utils/helpers";
 import ActivityGroup from "./ActivityGroup";
-
-interface Activity {
-  id: number;
-  user_id: number | null;
-  project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
-  timestamp: string | null;
-}
 
 interface ActivityGroupByTypeProps {
   activities: { data: Activity[] | null; error: string | null };

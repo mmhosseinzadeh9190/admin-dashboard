@@ -1,21 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProjects } from "../../services/apiProjects";
 import Spinner from "../../ui/Spinner";
 import ProjectsColumn from "./ProjectsColumn";
+import { useProjects } from "./useProjects";
 
 function ProjectsColumns() {
-  const {
-    data: projects,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["project"],
-    queryFn: getProjects,
-  });
+  const { projects, isLoading, error } = useProjects();
 
   if (isLoading) return <Spinner />;
 
-  const statuses = ["pending", "run", "done"];
+  const statuses: Array<"pending" | "run" | "done"> = [
+    "pending",
+    "run",
+    "done",
+  ];
 
   return (
     <div className="container mx-auto h-full">

@@ -1,13 +1,5 @@
+import { Activity } from "../../services/apiActivity";
 import ActivityCard from "./ActivityCard";
-
-interface Activity {
-  id: number;
-  user_id: number | null;
-  project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
-  timestamp: string | null;
-}
 
 interface ActivityGroupProps {
   title: string;

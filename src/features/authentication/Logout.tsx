@@ -13,14 +13,14 @@ function Logout() {
 
   return (
     <Button
-      className={`mt-auto flex items-center ${isPending ? "justify-center" : ""} gap-3 rounded-md px-6 py-3 tracking-0.1 text-error-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100`}
+      className={`mt-auto flex items-center ${isPending ? "justify-center" : ""} gap-3 rounded-md px-5 py-3 font-medium tracking-0.1 text-error-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100`}
       onClick={handleLogout}
       disabled={isPending}
     >
       {!isPending ? (
         <>
           <span className="text-error-600">
-            <LogoutIcon size="24" variant="Bulk" />
+            <LogoutIcon size="20" variant="Linear" />
           </span>
           <span className="-mb-px">Logout</span>
         </>

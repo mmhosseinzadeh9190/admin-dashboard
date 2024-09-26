@@ -12,11 +12,19 @@ function NavItem({ to, icon, label }: NavItemProps) {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `flex items-center gap-3 rounded-md px-6 py-3 tracking-0.1 hover:bg-gray-100 ${isActive ? "bg-gray-100 font-semibold text-primary-800" : "text-gray-900"}`
+          `group flex items-center gap-3 rounded-lg px-5 py-3 font-medium tracking-0.1 hover:bg-gray-100 hover:text-gray-800 ${isActive ? "bg-gray-100 text-gray-800" : "text-gray-700"}`
         }
       >
-        <span className="text-gray-600">{icon}</span>
-        <span className="-mb-px">{label}</span>
+        {({ isActive }) => (
+          <>
+            <span
+              className={`${isActive ? "text-primary-800" : "text-gray-600"} group-hover:text-primary-800`}
+            >
+              {icon}
+            </span>
+            <span className="-mb-px">{label}</span>
+          </>
+        )}
       </NavLink>
     </li>
   );

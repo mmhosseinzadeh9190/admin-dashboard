@@ -5,7 +5,7 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { Filter } from "iconsax-react";
+import { Sort } from "iconsax-react";
 import { iconColor } from "../styles/GlobalStyles";
 import { useSearchParams } from "react-router-dom";
 
@@ -41,19 +41,19 @@ function CustomSelect({ options }: CustomSelectProps) {
   return (
     <div className="w-40">
       <Listbox value={selected} onChange={handleChange}>
-        <ListboxButton className="relative block w-full rounded-[10px] bg-white py-2 pl-3 pr-8 text-left font-roboto text-sm tracking-0.1 text-gray-800 shadow-sm">
+        <ListboxButton className="relative block w-full rounded-lg bg-white py-2 pl-3 pr-9 text-left font-roboto text-sm tracking-0.1 text-gray-800 shadow-sm">
           {selected.label}
           <span
             aria-hidden="true"
             className="pointer-events-none absolute right-2.5 top-2.5"
           >
-            <Filter size="16" color={iconColor} variant="Bulk" />
+            <Sort size="18" color={iconColor} variant="Linear" />
           </span>
         </ListboxButton>
         <ListboxOptions
           anchor="bottom"
           transition
-          className="mt-1 w-[var(--button-width)] rounded-[10px] border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 [--anchor-gap:var(--spacing-1)]"
+          className="mt-1 w-[var(--button-width)] rounded-lg border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 [--anchor-gap:var(--spacing-1)]"
         >
           {options.map((option) => (
             <ListboxOption

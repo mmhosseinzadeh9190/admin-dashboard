@@ -17,9 +17,17 @@ export function extractTime(dateString: string): string {
 }
 
 export function isValidImage(url: string): string | boolean {
-  const imagePattern = /\.(jpeg|jpg|gif|png|bmp|webp|svg|tiff|tif)$/i;
+  const imagePattern = /\.(jpeg|jpg|png|webp|svg)$/i;
   const cleanUrl = url.split("?")[0];
   return cleanUrl && cleanUrl.length > 0 && imagePattern.test(cleanUrl);
+}
+
+export function addDefaultSrc(
+  e: React.SyntheticEvent<HTMLImageElement, Event>,
+  type: "avatar" | "image",
+) {
+  if (type === "avatar") e.currentTarget.src = "/public/avatarPlaceholder.png";
+  if (type === "image") e.currentTarget.src = "/public/imagePlaceholder.png";
 }
 
 export function capitalizeFirstLetter(input: string): string {

@@ -7,10 +7,10 @@
 }
 
 .fc .fc-toolbar-title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   letter-spacing: 0.1px;
   font-weight: 600;
-  color: #171725;
+  color: #696974;
 }
 
 .fc .fc-toolbar.fc-header-toolbar {
@@ -33,23 +33,23 @@
 .fc .fc-button-primary {
   border: none;
   background-color: #fff;
-  color: #44444f;
+  color: #696974;
 }
 
 .fc .fc-button-primary:disabled {
   background-color: #fff;
-  color: #44444f;
+  color: #696974;
 }
 
 .fc .fc-button-primary:hover {
-  background-color: #f4e5ff;
-  color: #6a0dad;
+  background-color: #f1f1f5;
+  color: #44444f;
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active,
 .fc .fc-button-primary:not(:disabled):active {
-  background-color: #f4e5ff;
-  color: #6a0dad;
+  background-color: #f1f1f5;
+  color: #44444f;
 }
 .fc .fc-button-primary:focus {
   box-shadow: none;
@@ -83,8 +83,14 @@
   font-family: "Roboto", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+.fc .fc-daygrid-day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 .fc .fc-daygrid-day.fc-day-today {
-  background-color: #faf4ff;
+  background-color: #fafafb;
 }
 
 .fc .fc-daygrid-day-top {
@@ -150,7 +156,7 @@
 }
 
 .fc .fc-daygrid-day-number {
-  color: #171725;
+  color: #696974;
   font-family: "Roboto", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }

@@ -3,6 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
@@ -75,6 +76,46 @@ export default {
           800: "#FF5A00",
           900: "#FF4500",
         },
+      },
+
+      animation: {
+        enter: " enter .2s ease-out",
+        leave: "leave 0.15s ease-in forwards",
+      },
+
+      keyframes: {
+        enter: {
+          "0%": {
+            transform: "scale(.9)",
+            opacity: 0,
+          },
+          "100%": {
+            transform: "scale(1)",
+            opacity: 1,
+          },
+        },
+        leave: {
+          "0%": {
+            transform: "scale(1)",
+            opacity: 1,
+          },
+          "100%": {
+            transform: "scale(.9)",
+            opacity: 0,
+          },
+        },
+      },
+
+      width: {
+        "4xl": "56rem",
+      },
+
+      height: {
+        xl: "36rem",
+      },
+
+      borderRadius: {
+        "2.5xl": "20px",
       },
     },
   },

@@ -17,7 +17,7 @@ export function extractTime(dateString: string): string {
 }
 
 export function isValidImage(url: string): string | boolean {
-  const imagePattern = /\.(jpeg|jpg|png|webp|svg)$/i;
+  const imagePattern = /\.(jpeg|jpg|png|webp)$/i;
   const cleanUrl = url.split("?")[0];
   return cleanUrl && cleanUrl.length > 0 && imagePattern.test(cleanUrl);
 }
@@ -33,4 +33,45 @@ export function addDefaultSrc(
 export function capitalizeFirstLetter(input: string): string {
   if (input.length === 0) return input;
   return input.charAt(0).toUpperCase() + input.slice(1);
+}
+
+export function capitalizeAllFirstLetters(input: string): string {
+  if (input.length === 0) return input;
+  return input
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export function formatISODateToCustomFormat(isoDate: string): string {
+  const date = new Date(isoDate);
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid date format");
+  }
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const dayName = daysOfWeek[date.getUTCDay()];
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const monthName = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+  return `${dayName}, ${day} ${monthName} ${year}`;
+}
+
+export function generateUniqueId() {
+  const timestamp = Date.now();
+  const randomNum = Math.floor(Math.random() * 1000);
+  return timestamp + randomNum;
 }

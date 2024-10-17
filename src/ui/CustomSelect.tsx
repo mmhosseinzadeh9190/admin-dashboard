@@ -53,15 +53,15 @@ function CustomSelect({ options }: CustomSelectProps) {
         <ListboxOptions
           anchor="bottom"
           transition
-          className="mt-1 w-[var(--button-width)] rounded-lg border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 [--anchor-gap:var(--spacing-1)]"
+          className="mt-1 w-[var(--button-width)] rounded-lg border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10"
         >
           {options.map((option) => (
             <ListboxOption
               key={option.value}
               value={option}
-              className="select-none rounded-md px-3 py-1.5 hover:bg-gray-100"
+              className="select-none rounded-md px-3 py-1.5 hover:bg-gray-200"
             >
-              <div className="font-roboto text-sm tracking-0.1 text-gray-700">
+              <div className="font-roboto text-sm tracking-0.1 text-gray-700 hover:text-gray-800">
                 {option.label}
               </div>
             </ListboxOption>

@@ -18,7 +18,7 @@ function Projects() {
         />
       </div>
 
-      <div className="h-full">
+      <div style={{ height: `calc(100% - 36px)` }}>
         <ProjectsColumns />
       </div>
     </div>

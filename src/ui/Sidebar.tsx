@@ -14,7 +14,7 @@ function Sidebar() {
   };
 
   return (
-    <aside className="row-span-full flex border-r border-gray-200 p-6">
+    <aside className="row-span-full flex border-r border-gray-200 p-5">
       <Button
         className="p-2 md:hidden"
         onClick={toggleSidebar}

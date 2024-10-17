@@ -10,21 +10,21 @@ function CustomizedToaster() {
         success: {
           duration: 3000,
           iconTheme: {
-            primary: "#22c55e",
+            primary: "#16a34a",
             secondary: "#f0fdf5",
           },
         },
         error: {
           duration: 5000,
           iconTheme: {
-            primary: "#ff3333",
+            primary: "#ed1515",
             secondary: "#fff1f1",
           },
         },
         style: {
-          maxWidth: "30rem",
+          maxWidth: "28rem",
           padding: "0.75rem 1rem",
-          backgroundColor: "#FAFAFB",
+          backgroundColor: "#fff",
           color: "#44444F",
           boxShadow:
             "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",

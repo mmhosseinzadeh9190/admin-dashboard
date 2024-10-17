@@ -18,7 +18,7 @@ function Activity() {
         />
       </div>
 
-      <div>
+      <div className="h-full">
         <ActivitiesContainer />
       </div>
     </div>

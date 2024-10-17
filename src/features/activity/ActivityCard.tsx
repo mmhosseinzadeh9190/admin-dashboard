@@ -1,5 +1,9 @@
 import Spinner from "../../ui/Spinner";
-import { addDefaultSrc, extractTime, isValidImage } from "../../utils/helpers";
+import {
+  addDefaultSrc,
+  capitalizeAllFirstLetters,
+  extractTime,
+} from "../../utils/helpers";
 import { Activity } from "../../services/apiActivity";
 import { useProjects } from "../projects/useProjects";
 import { useUsers } from "../dashboard/useUsers";
@@ -23,19 +27,17 @@ function ActivityCard({ activity }: ActivityCardProps) {
     (project) => project.id === activity.project_id,
   );
 
-  const projectName = project ? project.name : "Unnamed Project";
+  const projectName =
+    capitalizeAllFirstLetters(project?.name!) || "Unnamed Project";
 
   const user = users?.data?.find(
     (user) => String(user.id) === activity.user_id,
   );
 
-  const username = user ? user.name : "Unknown User";
-
-  const placeholderImage = "./../../../public/placeholder.png";
-
-  const userPicture = isValidImage(user?.avatar_url!)
-    ? user?.avatar_url
-    : placeholderImage;
+  const name = capitalizeAllFirstLetters(user?.name!) || "Unknown User";
+  const placeholderAvatar = "/public/avatarPlaceholder.png";
+  const placeholderImage = "/public/imagePlaceholder.png";
+  const userAvatar = user?.avatar_url || placeholderAvatar;
 
   const timeDisplay = activity.timestamp
     ? extractTime(activity.timestamp)
@@ -43,22 +45,22 @@ function ActivityCard({ activity }: ActivityCardProps) {
 
   let activityMessage;
 
-  switch (activity.activity) {
+  switch (activity.type) {
     case "task":
-      activityMessage = `On ${projectName} ${username} checked off:`;
+      activityMessage = `On ${projectName} ${name} checked off:`;
       break;
     case "comment":
-      activityMessage = `${username} commented on ${projectName}`;
+      activityMessage = `${name} commented on ${projectName}`;
       break;
     case "photo":
-      activityMessage = `${username} uploaded new photos on ${projectName}`;
+      activityMessage = `${name} uploaded new photos on ${projectName}`;
       break;
     default:
-      activityMessage = `${activity.activity || "No Title"} activity detected.`;
+      activityMessage = `${activity.type || "No Title"} activity detected.`;
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-3xl border border-gray-200 bg-white p-4">
+    <div className="flex flex-col gap-4 rounded-3xl border border-gray-200 bg-white px-5 py-4">
       <div className="flex items-center justify-between">
         <h4 className="font-roboto text-sm tracking-0.1 text-gray-600">
           {projectName}
@@ -67,22 +69,20 @@ function ActivityCard({ activity }: ActivityCardProps) {
       </div>
       <div className="flex gap-3">
         <img
-          src={userPicture!}
-          alt={username!}
+          src={userAvatar}
+          alt=""
+          onError={(e) => addDefaultSrc(e, "avatar")}
           className="h-10 w-10 rounded-full object-cover object-center"
         />
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 overflow-hidden break-words">
           <p className="font-roboto font-semibold tracking-0.1 text-gray-800">
             {activityMessage}
           </p>
 
-          {activity.activity === "task" && activity.activity_content && (
+          {activity.type === "task" && activity.content && (
             <div className="font-roboto text-sm tracking-0.1 text-gray-800">
-              {activity.activity_content.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 line-through"
-                >
+              {activity.content.map((item, index) => (
+                <div key={index} className="flex items-center gap-3">
                   <input
                     type="checkbox"
                     aria-label="checkbox"
@@ -95,27 +95,23 @@ function ActivityCard({ activity }: ActivityCardProps) {
             </div>
           )}
 
-          {activity.activity === "photo" && activity.activity_content && (
+          {activity.type === "photo" && activity.content && (
             <div className="mt-2 flex flex-wrap gap-3">
-              {activity.activity_content.map((photo, index) => (
+              {activity.content.map((photo, index) => (
                 <img
                   key={index}
-                  src={
-                    isValidImage(photo)
-                      ? photo
-                      : "./../../../public/imagePlaceholder.png"
-                  }
-                  alt={`Uploaded photo ${username}`}
-                  onError={(e) => addDefaultSrc(e, "avatar")}
-                  className="w-44 rounded-lg"
+                  src={photo || placeholderImage}
+                  alt={`Uploaded photo ${name}`}
+                  onError={(e) => addDefaultSrc(e, "image")}
+                  className="h-44 rounded-lg"
                 />
               ))}
             </div>
           )}
 
-          {activity.activity === "comment" && activity.activity_content && (
+          {activity.type === "comment" && activity.content && (
             <p className="font-roboto text-sm tracking-0.1 text-gray-800">
-              {activity.activity_content[0]}
+              {activity.content[0]}
             </p>
           )}
         </div>

@@ -4,8 +4,8 @@ export interface Activity {
   id: number;
   user_id: string | null;
   project_id: number | null;
-  activity: string | null;
-  activity_content: string[] | null;
+  type: string | null;
+  content: string[] | null;
   timestamp: string | null;
 }
 

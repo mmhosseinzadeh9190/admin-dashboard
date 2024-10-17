@@ -9,7 +9,7 @@ function Schedule() {
         </h1>
       </div>
 
-      <div>
+      <div className="h-full">
         <CustomCalendar />
       </div>
     </div>

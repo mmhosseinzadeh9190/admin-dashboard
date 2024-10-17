@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Dashboard from "./pages/Dashboard";
 import Messages from "./pages/Messages";
 import Projects from "./pages/Projects";
+import Project from "./pages/Project";
 import Schedule from "./pages/Schedule";
 import Activity from "./pages/Activity";
 import Settings from "./pages/Settings";
@@ -27,7 +28,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
 
       <BrowserRouter>
         <Routes>
@@ -42,6 +43,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="messages" element={<Messages />} />
             <Route path="projects" element={<Projects />} />
+            <Route path="projects/:projectId" element={<Project />} />
             <Route path="schedule" element={<Schedule />} />
             <Route path="activity" element={<Activity />} />
             <Route path="settings" element={<Settings />} />

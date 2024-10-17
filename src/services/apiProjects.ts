@@ -32,3 +32,24 @@ export async function getProjects(): Promise<{
 
   return { data, error: null };
 }
+
+export async function getProject(id: string): Promise<{
+  data: Project | null;
+  error: string | null;
+}> {
+  const { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching project:", error.message);
+    return {
+      data: null,
+      error: "Failed to fetch project. Please try again later.",
+    };
+  }
+
+  return { data, error: null };
+}

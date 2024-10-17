@@ -6,10 +6,11 @@ export function useActivity() {
     data: activities,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["activities"],
     queryFn: getActivities,
   });
 
-  return { activities, isLoading, error };
+  return { activities, isLoading, error, refetch };
 }

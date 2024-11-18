@@ -6,10 +6,11 @@ export function useSchedules() {
     data: schedules,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["schedules"],
     queryFn: getSchedules,
   });
 
-  return { schedules, isLoading, error };
+  return { schedules, isLoading, error, refetch };
 }

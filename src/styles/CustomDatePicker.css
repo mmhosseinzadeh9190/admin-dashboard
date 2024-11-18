@@ -1,0 +1,118 @@
+.react-datepicker__header {
+  background-color: #fafafb;
+  border-bottom: 1px solid #f1f1f5;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  color: #44444f;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  letter-spacing: 0.1px;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.react-datepicker__day-names {
+  margin-top: 4px;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  border-radius: 0.375rem;
+  background-color: #f1f1f5;
+  color: #44444f;
+}
+
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  border-radius: 0.375rem;
+  background-color: #fafafb;
+}
+
+.react-datepicker__day--selected:not([aria-disabled="true"]):hover,
+.react-datepicker__day--in-selecting-range:not([aria-disabled="true"]):hover,
+.react-datepicker__day--in-range:not([aria-disabled="true"]):hover,
+.react-datepicker__month-text--selected:not([aria-disabled="true"]):hover,
+.react-datepicker__month-text--in-selecting-range:not(
+    [aria-disabled="true"]
+  ):hover,
+.react-datepicker__month-text--in-range:not([aria-disabled="true"]):hover,
+.react-datepicker__quarter-text--selected:not([aria-disabled="true"]):hover,
+.react-datepicker__quarter-text--in-selecting-range:not(
+    [aria-disabled="true"]
+  ):hover,
+.react-datepicker__quarter-text--in-range:not([aria-disabled="true"]):hover,
+.react-datepicker__year-text--selected:not([aria-disabled="true"]):hover,
+.react-datepicker__year-text--in-selecting-range:not(
+    [aria-disabled="true"]
+  ):hover,
+.react-datepicker__year-text--in-range:not([aria-disabled="true"]):hover {
+  background-color: #f1f1f5;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  color: #44444f;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.react-datepicker__day:not([aria-disabled="true"]):hover,
+.react-datepicker__month-text:not([aria-disabled="true"]):hover,
+.react-datepicker__quarter-text:not([aria-disabled="true"]):hover,
+.react-datepicker__year-text:not([aria-disabled="true"]):hover {
+  border-radius: 0.375rem;
+  background-color: #f1f1f5;
+  color: #44444f;
+}
+
+.react-datepicker__today-button {
+  background-color: #fafafb;
+  border-top: 1px solid #f1f1f5;
+  padding: 0.5rem 0;
+  color: #44444f;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  letter-spacing: 0.1px;
+}
+
+.react-datepicker__view-calendar-icon input {
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+}
+
+.react-datepicker__input-container {
+  display: flex;
+  align-items: center;
+}
+
+.react-datepicker__input-container .react-datepicker__calendar-icon {
+  padding: 0.625rem;
+}
+
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
+  border-color: #b5b5be;
+  top: 8px;
+  border-radius: 2px;
+}
+
+.react-datepicker__navigation:hover *::before {
+  border-color: #92929d;
+}

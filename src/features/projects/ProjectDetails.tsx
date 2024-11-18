@@ -27,6 +27,7 @@ function ProjectDetails() {
     schedules,
     isLoading: schedulesIsLoading,
     error: schedulesError,
+    refetch: scheduleRefetch,
   } = useSchedules();
   const {
     activities,
@@ -58,7 +59,7 @@ function ProjectDetails() {
         />
 
         {project?.data?.attachments?.length! > 0 && (
-          <ProjectDetailsAttachments project={project?.data!} user={user!} />
+          <ProjectDetailsAttachments project={project?.data!} />
         )}
 
         <ProjectDetailsTasks
@@ -77,7 +78,15 @@ function ProjectDetails() {
         />
       </div>
 
-      <ProjectDetailsFooterButtons project={project?.data!} user={user!} />
+      <ProjectDetailsFooterButtons
+        project={project?.data!}
+        schedules={schedules}
+        users={users}
+        teams={teams}
+        user={user!}
+        onProjectUpdated={projectRefetch}
+        onScheduleUpdated={scheduleRefetch}
+      />
     </div>
   );
 }

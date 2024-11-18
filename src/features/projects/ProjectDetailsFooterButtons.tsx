@@ -1,22 +1,53 @@
-import { ArrowLeft, Edit, TickSquare, TimerStart, Trash } from "iconsax-react";
-import { Project } from "../../services/apiProjects";
-import { User } from "@supabase/supabase-js";
-import Button from "../../ui/Button";
+import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TickSquare, TimerStart } from "iconsax-react";
+import { Project } from "../../services/apiProjects";
+import { Schedule } from "../../services/apiSchedule";
+import { User } from "../../services/apiUsers";
+import { Team } from "../../services/apiTeams";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import Modal from "../../ui/Modal";
+import DeleteProjectModalContent from "./DeleteProjectModalContent";
+import EditProjectModalContent from "./EditProjectModalContent";
+import PreMadeButtons from "../../ui/PreMadeButtons";
 
 interface ProjectDetailsFooterButtonsProps {
   project: Project;
-  user: User;
+  schedules: { data: Schedule[] | null; error: string | null } | undefined;
+  users: { data: User[] | null; error: string | null } | undefined;
+  teams: { data: Team[] | null; error: string | null } | undefined;
+  user: SupabaseUser;
+  onProjectUpdated: () => void;
+  onScheduleUpdated: () => void;
 }
 
 function ProjectDetailsFooterButtons({
   project,
+  schedules,
+  users,
+  teams,
   user,
+  onProjectUpdated,
+  onScheduleUpdated,
 }: ProjectDetailsFooterButtonsProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode>(null);
+
+  const handleOpenModal = (content: ReactNode) => {
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+  };
+
   const navigate = useNavigate();
 
   let buttonText;
   let buttonIcon;
+  let buttonModalContent;
   if (project.status === "pending") {
     buttonText = "Start";
     buttonIcon = <TimerStart size="16" variant="Linear" />;
@@ -30,37 +61,47 @@ function ProjectDetailsFooterButtons({
       {user?.id === project.created_by && (
         <>
           {project.status === "pending" || project.status === "run" ? (
-            <Button className="flex items-center gap-2 rounded-lg border border-success-100 bg-success-50 px-3.5 py-2.5 text-success-700 hover:bg-success-100">
-              {buttonIcon}
-              <span className="text-sm font-medium tracking-0.1">
-                {buttonText}
-              </span>
-            </Button>
+            <PreMadeButtons
+              type="confirm"
+              text={buttonText!}
+              onClick={() => {}}
+              icon={buttonIcon}
+            />
           ) : null}
 
-          <Button className="flex items-center gap-2 rounded-lg border border-error-100 bg-error-50 px-3.5 py-2.5 text-error-700 hover:bg-error-100">
-            <Trash size="16" variant="Linear" />
-            <span className="text-sm font-medium tracking-0.1">Delete</span>
-          </Button>
+          <PreMadeButtons
+            type="delete"
+            text="Delete"
+            onClick={() =>
+              handleOpenModal(<DeleteProjectModalContent project={project} />)
+            }
+          />
 
-          <Button className="flex items-center gap-2 rounded-lg border border-primary-100 bg-primary-50 px-3.5 py-2.5 text-primary-800 hover:bg-primary-100">
-            <Edit size="16" variant="Linear" />
-            <span className="text-sm font-medium tracking-0.1">Edit</span>
-          </Button>
+          <PreMadeButtons
+            type="edit"
+            text="Edit"
+            onClick={() =>
+              handleOpenModal(
+                <EditProjectModalContent
+                  project={project}
+                  schedules={schedules}
+                  users={users}
+                  teams={teams}
+                  onClose={handleCloseModal}
+                  onProjectUpdated={onProjectUpdated}
+                  onScheduleUpdated={onScheduleUpdated}
+                />,
+              )
+            }
+          />
         </>
       )}
 
-      <Button
-        className="group flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 hover:bg-gray-100"
-        onClick={() => navigate(-1)}
-      >
-        <span className="text-gray-600 group-hover:text-gray-700">
-          <ArrowLeft size="16" variant="Linear" />
-        </span>
-        <span className="text-sm font-medium tracking-0.1 text-gray-700 group-hover:text-gray-800">
-          Back
-        </span>
-      </Button>
+      <PreMadeButtons type="cancel" text="Back" onClick={() => navigate(-1)} />
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {modalContent}
+      </Modal>
     </div>
   );
 }

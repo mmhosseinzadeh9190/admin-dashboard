@@ -41,7 +41,7 @@ function CustomSelect({ options }: CustomSelectProps) {
   return (
     <div className="w-40">
       <Listbox value={selected} onChange={handleChange}>
-        <ListboxButton className="relative block w-full rounded-lg bg-white py-2 pl-3 pr-9 text-left font-roboto text-sm tracking-0.1 text-gray-800 shadow-sm">
+        <ListboxButton className="relative block w-full rounded-lg bg-white py-2 pl-3 pr-9 text-left font-roboto text-sm tracking-0.1 text-gray-800 shadow-sm focus:outline-none">
           {selected.label}
           <span
             aria-hidden="true"
@@ -53,15 +53,15 @@ function CustomSelect({ options }: CustomSelectProps) {
         <ListboxOptions
           anchor="bottom"
           transition
-          className="mt-1 w-[var(--button-width)] rounded-lg border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10"
+          className="mt-1 w-40 rounded-lg border border-gray-200 bg-white p-1 shadow-[0_5px_15px_0] shadow-gray-800/10 focus:outline-none"
         >
           {options.map((option) => (
             <ListboxOption
               key={option.value}
               value={option}
-              className="select-none rounded-md px-3 py-1.5 hover:bg-gray-200"
+              className="group cursor-pointer select-none rounded-md px-3 py-1.5 hover:bg-gray-200"
             >
-              <div className="font-roboto text-sm tracking-0.1 text-gray-700 hover:text-gray-800">
+              <div className="font-roboto text-sm tracking-0.1 text-gray-700 group-hover:text-gray-800">
                 {option.label}
               </div>
             </ListboxOption>

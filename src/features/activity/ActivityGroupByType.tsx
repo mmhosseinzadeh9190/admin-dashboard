@@ -10,7 +10,7 @@ function ActivityGroupByType({ activities }: ActivityGroupByTypeProps) {
   const groupActivitiesByType = (activities: Activity[]) => {
     return activities.reduce(
       (acc, activity) => {
-        const activityType = activity.activity;
+        const activityType = activity.type;
         acc[activityType!] = acc[activityType!]
           ? [...acc[activityType!], activity]
           : [activity];

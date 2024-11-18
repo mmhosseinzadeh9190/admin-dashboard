@@ -3,7 +3,7 @@ function Logo() {
 
   return (
     <div className="flex justify-center">
-      <img src={src} alt="Logo of Hollow dashboard" className="w-32" />
+      <img src={src} alt="Hollow" className="w-32" />
     </div>
   );
 }

@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import supabase from "../../services/supabase";
 import Button from "../../ui/Button";
 import toast from "react-hot-toast";
-import { CloseSquare } from "iconsax-react";
+import { ArrowLeft, CloseSquare, TickSquare } from "iconsax-react";
+import PreMadeButtons from "../../ui/PreMadeButtons";
 
 interface EditCommentFormProps {
   commentId: string;
@@ -18,6 +19,7 @@ function EditCommentModalContent({
   onClose,
 }: EditCommentFormProps) {
   const [content, setContent] = useState(initialContent);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -29,6 +31,8 @@ function EditCommentModalContent({
   }, [content]);
 
   const handleUpdate = async () => {
+    setIsSubmitting(true);
+
     const updatedContent = `{${content}}`;
 
     const { error } = await supabase
@@ -42,11 +46,13 @@ function EditCommentModalContent({
       toast.success("Comment updated successfully!");
       onEditSuccess();
     }
+
+    setIsSubmitting(false);
     onClose();
   };
 
   return (
-    <div className="flex w-96 flex-col gap-5">
+    <div className="flex w-96 flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Edit Comment
@@ -63,23 +69,29 @@ function EditCommentModalContent({
         value={content}
         onChange={(e) => setContent(e.target.value)}
         autoFocus
-        className="mb-1 h-36 w-full resize-none rounded-lg border border-gray-200 bg-gray-100 p-2 font-roboto tracking-0.1 text-gray-800 focus:outline-none"
+        className="h-36 w-full resize-none rounded-lg border border-gray-200 bg-gray-100 p-2 font-roboto tracking-0.1 text-gray-800 focus:outline-none"
       />
 
-      <div className="flex gap-3 text-sm font-medium">
-        <Button
-          onClick={onClose}
-          className="w-full rounded-lg bg-gray-200 px-3.5 py-2.5 text-gray-800 hover:bg-gray-300 focus:outline-none"
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={handleUpdate}
-          disabled={!content.trim() || content === initialContent}
-          className="w-full rounded-lg bg-success-700 px-3.5 py-2.5 text-success-50 hover:bg-success-800 focus:outline-none disabled:cursor-not-allowed disabled:opacity-75"
-        >
-          Confirm
-        </Button>
+      <div className="flex justify-end">
+        <div className="flex w-2/3 gap-3">
+          <PreMadeButtons
+            type="cancel"
+            text="Cancel"
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="w-full"
+          />
+
+          <PreMadeButtons
+            type="confirm"
+            text="Confirm"
+            onClick={handleUpdate}
+            disabled={
+              !content.trim() || content === initialContent || isSubmitting
+            }
+            className="w-full"
+          />
+        </div>
       </div>
     </div>
   );

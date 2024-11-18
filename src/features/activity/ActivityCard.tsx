@@ -86,7 +86,8 @@ function ActivityCard({ activity }: ActivityCardProps) {
                   <input
                     type="checkbox"
                     aria-label="checkbox"
-                    checked
+                    checked={true}
+                    readOnly
                     className="accent-success-600"
                   />
                   <span>{item}</span>

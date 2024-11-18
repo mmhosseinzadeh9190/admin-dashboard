@@ -64,14 +64,16 @@ function ProjectDetailsTasks({
         <div className="flex flex-col gap-4">
           {project.tasks?.map((task, index) => {
             const { schedule, assignedUser } = getTaskInfo(task);
+            const isChecked = project.tasks_done?.includes(task);
             return (
               <div key={index} className="flex items-center gap-3">
                 <input
                   type="checkbox"
                   aria-label="checkbox"
-                  checked={project.tasks_done?.includes(task)}
+                  checked={isChecked}
                   onClick={handleCheckboxClick}
                   className="h-3.5 w-5 accent-success-600 focus:outline-none"
+                  readOnly
                 />
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
                   <span className="max-w-3xl truncate font-roboto tracking-0.1 text-gray-800">

@@ -24,6 +24,7 @@ function ProjectDetailsHeader({ project, users }: ProjectDetailsHeaderProps) {
   )?.name;
 
   const projectCreatedAt = formatISODateToCustomFormat(project.created_at!);
+  const projectUpdatedAt = formatISODateToCustomFormat(project.updated_at!);
 
   return (
     <div className="flex flex-col gap-6">
@@ -34,7 +35,7 @@ function ProjectDetailsHeader({ project, users }: ProjectDetailsHeaderProps) {
           </h1>
 
           <Button
-            className="flex items-center gap-1 font-medium tracking-0.1 text-primary-800 hover:text-primary-900"
+            className="flex items-center gap-1 font-medium tracking-0.1 text-primary-800 hover:text-primary-900 focus:outline-none"
             onClick={() => navigate(-1)}
           >
             <ArrowLeft size="16" variant="Linear" />
@@ -49,6 +50,24 @@ function ProjectDetailsHeader({ project, users }: ProjectDetailsHeaderProps) {
           </span>
           , on <span className="text-gray-700">{projectCreatedAt}</span>
         </span>
+
+        <span className="font-roboto text-sm tracking-0.1 text-gray-800">
+          Last update at{" "}
+          <span className="text-gray-700">{projectUpdatedAt}</span>
+        </span>
+
+        {project.tags!.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {project.tags!.map((tag, index) => (
+              <span
+                key={index}
+                className="relative flex max-w-48 cursor-default items-center justify-center truncate rounded-full border border-primary-100 bg-primary-50 px-3 py-2 text-xs font-medium tracking-0.1 text-primary-800"
+              >
+                {tag.toLowerCase()}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

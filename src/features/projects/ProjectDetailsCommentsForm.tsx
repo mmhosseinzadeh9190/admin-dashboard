@@ -1,7 +1,7 @@
 import { CloseCircle, Paperclip, Send } from "iconsax-react";
 import Button from "../../ui/Button";
 import { addDefaultSrc, generateUniqueId } from "../../utils/helpers";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Project } from "../../services/apiProjects";
 import { User } from "@supabase/supabase-js";
 import supabase from "../../services/supabase";
@@ -22,6 +22,8 @@ function ProjectDetailsCommentsForm({
 }: ProjectDetailsCommentsFormProps) {
   const [comment, setComment] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const placeholderAvatar = "/public/avatarPlaceholder.png";
 
@@ -36,16 +38,17 @@ function ProjectDetailsCommentsForm({
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files) {
-      const filesArray = Array.from(files);
-      setSelectedImages((prev) => [...prev, ...filesArray]);
-    }
+    const filesArray = Array.from(files!);
+    setSelectedImages((prev) => [...prev, ...filesArray]);
   };
 
   const handleImageUpload = async (image: File) => {
+    const uniqueSuffix = Date.now();
+    const newFileName = `${uniqueSuffix}-${image.name}`;
+
     const { error } = await supabase.storage
       .from("projects-images")
-      .upload(`${image.name}`, image);
+      .upload(newFileName, image);
 
     if (error) {
       toast.error("Failed to upload image. Please try again.");
@@ -54,7 +57,7 @@ function ProjectDetailsCommentsForm({
 
     const { data } = supabase.storage
       .from("projects-images")
-      .getPublicUrl(`${image.name}`);
+      .getPublicUrl(newFileName);
 
     toast.success("Image uploaded successfully!");
     return { publicUrl: data.publicUrl };
@@ -62,6 +65,7 @@ function ProjectDetailsCommentsForm({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     if (comment.trim() || selectedImages.length > 0) {
       if (comment.trim()) {
@@ -152,6 +156,8 @@ function ProjectDetailsCommentsForm({
       setComment("");
       setSelectedImages([]);
     }
+
+    setIsSubmitting(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -160,6 +166,10 @@ function ProjectDetailsCommentsForm({
       const formEvent = new Event("submit", { bubbles: true });
       e.currentTarget.closest("form")?.dispatchEvent(formEvent);
     }
+  };
+
+  const handleClickInput = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -182,12 +192,14 @@ function ProjectDetailsCommentsForm({
                       alt={`Selected ${index}`}
                       className="h-44 rounded-lg"
                     />
-                    <Button
-                      onClick={() => handleImageRemove(index)}
-                      className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-gray-100 p-1.5 text-gray-600 shadow-md transition-all duration-100 hover:bg-gray-200 hover:text-gray-700 focus:outline-none"
-                    >
-                      <CloseCircle size="20" variant="Linear" />
-                    </Button>
+                    {!isSubmitting && (
+                      <Button
+                        onClick={() => handleImageRemove(index)}
+                        className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-gray-100 p-1.5 text-gray-700 shadow-md transition-all duration-100 hover:text-error-700 focus:outline-none"
+                      >
+                        <CloseCircle size="20" variant="Linear" />
+                      </Button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -197,7 +209,7 @@ function ProjectDetailsCommentsForm({
                 onChange={(e) => setComment(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Add a comment or upload a file…"
-                className="h-11 w-full resize-none rounded-lg border border-gray-200 py-2 pl-3 pr-11 font-roboto text-sm/6 tracking-0.1 text-gray-800 placeholder:text-gray-500 focus:outline-none"
+                className="h-24 w-full resize-none rounded-lg border border-gray-200 py-2.5 pl-3.5 pr-11 font-roboto text-sm/5 tracking-0.1 text-gray-800 placeholder:text-gray-500 focus:outline-none"
               />
             )}
           </div>
@@ -205,12 +217,13 @@ function ProjectDetailsCommentsForm({
           {comment.trim() || selectedImages.length > 0 ? (
             <Button
               type="submit"
-              className="absolute right-2 top-2 p-1 text-gray-600 hover:text-gray-700 focus:outline-none"
+              disabled={isSubmitting}
+              className="absolute right-3 top-2 p-1 text-gray-600 hover:text-gray-700 focus:outline-none disabled:cursor-not-allowed disabled:opacity-75"
             >
               <Send size="18" variant="Linear" />
             </Button>
           ) : (
-            <span className="absolute right-2 top-2">
+            <span className="absolute right-3 top-2">
               <input
                 aria-label="attachment"
                 type="file"
@@ -218,11 +231,11 @@ function ProjectDetailsCommentsForm({
                 accept=".jpeg, .jpg, .png, .webp"
                 onChange={handleImageChange}
                 className="hidden"
-                id="fileInput"
+                ref={fileInputRef}
               />
               <Button
-                onClick={() => document.getElementById("fileInput")?.click()}
-                className="p-1 text-gray-600 hover:text-gray-700 focus:outline-none"
+                onClick={handleClickInput}
+                className="p-1 text-gray-600 hover:text-gray-700 focus:outline-none disabled:cursor-not-allowed disabled:opacity-75"
               >
                 <Paperclip size="18" variant="Linear" />
               </Button>

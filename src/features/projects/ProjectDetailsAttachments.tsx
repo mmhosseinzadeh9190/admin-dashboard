@@ -18,8 +18,10 @@ function ProjectDetailsAttachments({
         <Paperclip2 size="20" color={iconColor} variant="Linear" />
       </div>
       <div className="flex flex-col gap-3">
-        <h3 className="font-semibold tracking-0.1 text-gray-900">Attachment</h3>
-        <div className="flex flex-wrap gap-4">
+        <h3 className="font-semibold tracking-0.1 text-gray-900">
+          Attachments
+        </h3>
+        <div className="flex flex-wrap gap-3">
           {project.attachments?.map((attachment) => (
             <img
               key={attachment}

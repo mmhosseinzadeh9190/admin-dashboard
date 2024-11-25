@@ -27,6 +27,7 @@ interface EditProjectModalContentProjectTaskListProps {
   teamMembersAsUsers: User[] | undefined;
   handleUserSelect: (member: User) => void;
   handleAddTask: () => void;
+  disabled: boolean;
 }
 
 function EditProjectModalContentProjectTaskList({
@@ -43,6 +44,7 @@ function EditProjectModalContentProjectTaskList({
   teamMembersAsUsers,
   handleUserSelect,
   handleAddTask,
+  disabled,
 }: EditProjectModalContentProjectTaskListProps) {
   const placeholderImage = "/public/imagePlaceholder.png";
 
@@ -60,16 +62,21 @@ function EditProjectModalContentProjectTaskList({
             return (
               <div key={index} className="flex items-center gap-3">
                 <input
+                  id={`edit-modal-task-checkbox-${index}`}
                   aria-label="checkbox"
                   type="checkbox"
                   checked={isChecked}
+                  disabled={disabled}
                   onChange={() => handleCheckboxChange(task)}
-                  className="h-3.5 w-5 accent-success-600 focus:outline-none"
+                  className="h-3.5 w-5 accent-success-600 focus:outline-none disabled:cursor-not-allowed"
                 />
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
-                  <span className="max-w-md truncate font-roboto tracking-0.1 text-gray-800">
+                  <label
+                    htmlFor={`edit-modal-task-checkbox-${index}`}
+                    className="max-w-md truncate font-roboto tracking-0.1 text-gray-800"
+                  >
                     {task}
-                  </span>
+                  </label>
                   <span className="flex items-center gap-1 font-roboto text-sm tracking-0.1 text-gray-600">
                     <Calendar size="16" color={iconColor} variant="Linear" />
                     {formatISODateToCustomFormat(schedule?.date!)}
@@ -85,12 +92,14 @@ function EditProjectModalContentProjectTaskList({
                       {assignedUser?.name}
                     </span>
                   </span>
-                  <Button
-                    onClick={() => handleRemoveSavedTask(task)}
-                    className="ml-0.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
-                  >
-                    <Trash size="16" variant="Linear" />
-                  </Button>
+                  {!disabled && (
+                    <Button
+                      onClick={() => handleRemoveSavedTask(task)}
+                      className="ml-0.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
+                    >
+                      <Trash size="16" variant="Linear" />
+                    </Button>
+                  )}
                 </div>
               </div>
             );
@@ -104,15 +113,20 @@ function EditProjectModalContentProjectTaskList({
             return (
               <div key={index} className="flex items-center gap-3">
                 <input
+                  id={`edit-modal-new-task-checkbox-${index}`}
                   aria-label="checkbox"
                   type="checkbox"
+                  disabled={disabled}
                   onChange={() => handleCheckboxChange(task[0])}
-                  className="h-3.5 w-5 accent-success-600 focus:outline-none"
+                  className="h-3.5 w-5 accent-success-600 focus:outline-none disabled:cursor-not-allowed"
                 />
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
-                  <span className="max-w-md truncate font-roboto tracking-0.1 text-gray-800">
+                  <label
+                    htmlFor={`edit-modal-new-task-checkbox-${index}`}
+                    className="max-w-md truncate font-roboto tracking-0.1 text-gray-800"
+                  >
                     {task[0]}
-                  </span>
+                  </label>
                   <span className="flex items-center gap-1 font-roboto text-sm tracking-0.1 text-gray-600">
                     <Calendar size="16" color={iconColor} variant="Linear" />
                     {formatISODateToCustomFormat(task[1])}
@@ -128,12 +142,14 @@ function EditProjectModalContentProjectTaskList({
                       {task[2]?.name}
                     </span>
                   </span>
-                  <Button
-                    onClick={() => handleRemoveTask(task[0], index)}
-                    className="ml-0.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
-                  >
-                    <Trash size="16" variant="Linear" />
-                  </Button>
+                  {!disabled && (
+                    <Button
+                      onClick={() => handleRemoveTask(task[0], index)}
+                      className="ml-0.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
+                    >
+                      <Trash size="16" variant="Linear" />
+                    </Button>
+                  )}
                 </div>
               </div>
             );
@@ -148,22 +164,28 @@ function EditProjectModalContentProjectTaskList({
           type="text"
           value={newTask}
           placeholder="Enter new task"
+          disabled={disabled}
           onChange={(e) => setNewTask(e.target.value)}
           className="h-11 w-full rounded-xl border border-gray-200 bg-gray-100 py-2.5 pl-3.5 pr-[27.5rem] font-roboto text-sm tracking-0.1 text-gray-800 placeholder:font-light placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
         />
 
         <span className="absolute right-3 top-[3.2px] flex items-center gap-3">
-          <CustomDatePicker onDateChange={handleDateChange} />
+          <CustomDatePicker
+            onDateChange={handleDateChange}
+            disabled={disabled}
+          />
 
           <CustomUsersSelect
             members={teamMembersAsUsers!}
             onUserSelect={handleUserSelect}
+            disabled={disabled}
           />
 
           <Button
             type="submit"
+            disabled={disabled}
             onClick={handleAddTask}
-            className="p-1 text-gray-600 hover:text-gray-700 focus:outline-none"
+            className="p-1 text-gray-600 hover:text-gray-700 focus:outline-none disabled:cursor-not-allowed"
           >
             <Send size="18" variant="Linear" />
           </Button>

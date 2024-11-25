@@ -2,13 +2,15 @@ import PreMadeButtons from "../../ui/PreMadeButtons";
 
 interface EditProjectModalContentButtonsProps {
   onClose: () => void;
-  isSubmitting: boolean;
+  disabled: boolean;
+  notChanged: boolean;
   handleSave: () => Promise<void>;
 }
 
 function EditProjectModalContentButtons({
   onClose,
-  isSubmitting,
+  disabled,
+  notChanged,
   handleSave,
 }: EditProjectModalContentButtonsProps) {
   return (
@@ -17,7 +19,7 @@ function EditProjectModalContentButtons({
         type="cancel"
         text="Cancel"
         onClick={onClose}
-        disabled={isSubmitting}
+        disabled={disabled}
         className="w-full"
       />
 
@@ -25,7 +27,7 @@ function EditProjectModalContentButtons({
         type="confirm"
         text="Confirm"
         onClick={handleSave}
-        disabled={isSubmitting}
+        disabled={notChanged || disabled}
         className="w-full"
       />
     </div>

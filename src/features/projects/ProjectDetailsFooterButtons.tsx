@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ReactNode, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { TickSquare, TimerStart } from "iconsax-react";
 import { Project } from "../../services/apiProjects";
 import { Schedule } from "../../services/apiSchedule";
@@ -10,6 +10,8 @@ import Modal from "../../ui/Modal";
 import DeleteProjectModalContent from "./DeleteProjectModalContent";
 import EditProjectModalContent from "./EditProjectModalContent";
 import PreMadeButtons from "../../ui/PreMadeButtons";
+import StartProjectModalContent from "./StartProjectModalContent";
+import CompleteProjectModalContent from "./CompleteProjectModalContent";
 
 interface ProjectDetailsFooterButtonsProps {
   project: Project;
@@ -32,6 +34,25 @@ function ProjectDetailsFooterButtons({
 }: ProjectDetailsFooterButtonsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const param = searchParams.get("mode");
+    if (param && param === "edit") {
+      handleOpenModal(
+        <EditProjectModalContent
+          project={project}
+          schedules={schedules}
+          users={users}
+          teams={teams}
+          onClose={handleCloseModal}
+          onProjectUpdated={onProjectUpdated}
+          onScheduleUpdated={onScheduleUpdated}
+        />,
+      );
+    }
+  }, [searchParams]);
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);
@@ -43,17 +64,32 @@ function ProjectDetailsFooterButtons({
     setModalContent(null);
   };
 
-  const navigate = useNavigate();
+  let buttonText: string;
+  let buttonIcon: JSX.Element;
+  let buttonModalContent: JSX.Element;
 
-  let buttonText;
-  let buttonIcon;
-  let buttonModalContent;
   if (project.status === "pending") {
     buttonText = "Start";
     buttonIcon = <TimerStart size="16" variant="Linear" />;
-  } else if (project.status === "run") {
+    buttonModalContent = (
+      <StartProjectModalContent
+        project={project}
+        onProjectUpdated={onProjectUpdated}
+        onClose={handleCloseModal}
+      />
+    );
+  }
+
+  if (project.status === "run") {
     buttonText = "Complete";
     buttonIcon = <TickSquare size="16" variant="Linear" />;
+    buttonModalContent = (
+      <CompleteProjectModalContent
+        project={project}
+        onProjectUpdated={onProjectUpdated}
+        onClose={handleCloseModal}
+      />
+    );
   }
 
   return (
@@ -64,8 +100,8 @@ function ProjectDetailsFooterButtons({
             <PreMadeButtons
               type="confirm"
               text={buttonText!}
-              onClick={() => {}}
-              icon={buttonIcon}
+              onClick={() => handleOpenModal(buttonModalContent)}
+              icon={buttonIcon!}
             />
           ) : null}
 
@@ -73,7 +109,12 @@ function ProjectDetailsFooterButtons({
             type="delete"
             text="Delete"
             onClick={() =>
-              handleOpenModal(<DeleteProjectModalContent project={project} />)
+              handleOpenModal(
+                <DeleteProjectModalContent
+                  project={project}
+                  onClose={handleCloseModal}
+                />,
+              )
             }
           />
 

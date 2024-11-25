@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import supabase from "../../services/supabase";
 import Button from "../../ui/Button";
 import toast from "react-hot-toast";
-import { ArrowLeft, CloseSquare, TickSquare } from "iconsax-react";
+import { CloseSquare } from "iconsax-react";
 import PreMadeButtons from "../../ui/PreMadeButtons";
 
 interface EditCommentFormProps {

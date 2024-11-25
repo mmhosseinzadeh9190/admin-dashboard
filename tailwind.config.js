@@ -107,6 +107,7 @@ export default {
       },
 
       width: {
+        xl: "36rem",
         "4xl": "56rem",
       },
 

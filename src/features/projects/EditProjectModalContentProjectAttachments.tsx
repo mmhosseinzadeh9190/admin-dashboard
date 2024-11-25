@@ -7,12 +7,14 @@ interface EditProjectModalContentProjectAttachmentsProps {
   attachments: string[];
   handleRemoveAttachment: (attachment: string) => void;
   handleAddAttachment: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled: boolean;
 }
 
 function EditProjectModalContentProjectAttachments({
   attachments,
   handleRemoveAttachment,
   handleAddAttachment,
+  disabled,
 }: EditProjectModalContentProjectAttachmentsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,12 +40,14 @@ function EditProjectModalContentProjectAttachments({
               onError={(e) => addDefaultSrc(e, "image")}
               className="h-36 rounded-lg"
             />
-            <Button
-              onClick={() => handleRemoveAttachment(attachment)}
-              className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-gray-100 p-1.5 text-gray-700 shadow-md transition-all duration-100 hover:text-error-700 focus:outline-none"
-            >
-              <Trash size="18" variant="Linear" />
-            </Button>
+            {!disabled && (
+              <Button
+                onClick={() => handleRemoveAttachment(attachment)}
+                className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-gray-100 p-1.5 text-gray-700 shadow-md transition-all duration-100 hover:text-error-700 focus:outline-none"
+              >
+                <Trash size="18" variant="Linear" />
+              </Button>
+            )}
           </div>
         ))}
 
@@ -53,13 +57,15 @@ function EditProjectModalContentProjectAttachments({
             type="file"
             multiple
             accept=".jpeg, .jpg, .png, .webp"
+            disabled={disabled}
             onChange={handleAddAttachment}
             className="hidden"
             ref={fileInputRef}
           />
           <Button
             onClick={handleClickInput}
-            className="group flex h-36 w-48 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 transition-all duration-100 hover:border-gray-400"
+            disabled={disabled}
+            className="group flex h-36 w-48 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 transition-all duration-100 hover:border-gray-400 disabled:cursor-not-allowed disabled:bg-gray-200"
           >
             <span className="text-gray-600 transition-all duration-100 group-hover:text-gray-700">
               <Add size="28" variant="Linear" />

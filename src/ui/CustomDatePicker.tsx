@@ -7,9 +7,10 @@ import "../styles/CustomDatePicker.css";
 
 interface CustomDatePickerProps {
   onDateChange: (date: Date) => void;
+  disabled: boolean;
 }
 
-function CustomDatePicker({ onDateChange }: CustomDatePickerProps) {
+function CustomDatePicker({ onDateChange, disabled }: CustomDatePickerProps) {
   const [startDate, setStartDate] = useState(new Date());
 
   const handleChange = (date: Date | null) => {
@@ -35,13 +36,14 @@ function CustomDatePicker({ onDateChange }: CustomDatePickerProps) {
           </span>
         }
         placeholderText="Pick date"
-        className="w-40 cursor-pointer rounded-lg border border-gray-200 bg-white font-roboto text-sm/5 tracking-0.1 text-gray-800 caret-transparent placeholder:font-light placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
+        className="w-40 cursor-pointer rounded-lg border border-gray-200 bg-white font-roboto text-sm/5 tracking-0.1 text-gray-800 caret-transparent placeholder:font-light placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100"
         calendarClassName="border-gray-200 rounded-xl overflow-hidden shadow-[0_5px_15px_0] shadow-gray-800/10"
         showPopperArrow={false}
         closeOnScroll={true}
         todayButton="Today"
         calendarStartDay={6}
         clearButtonClassName="pr-2"
+        disabled={disabled}
       />
     </span>
   );

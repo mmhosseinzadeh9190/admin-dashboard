@@ -1,40 +1,37 @@
-import { CloseSquare } from "iconsax-react";
-import { Project } from "../../services/apiProjects";
-import Button from "../../ui/Button";
-import PreMadeButtons from "../../ui/PreMadeButtons";
 import { useState } from "react";
+import { Project } from "../../services/apiProjects";
 import supabase from "../../services/supabase";
 import toast from "react-hot-toast";
-import { useProjects } from "./useProjects";
-import { useNavigate } from "react-router-dom";
+import Button from "../../ui/Button";
+import { CloseSquare, TimerStart } from "iconsax-react";
+import PreMadeButtons from "../../ui/PreMadeButtons";
 
-interface DeleteProjectModalContentProps {
+interface StartProjectModalContentProops {
   project: Project;
+  onProjectUpdated: () => void;
   onClose: () => void;
 }
 
-function DeleteProjectModalContent({
+function StartProjectModalContent({
   project,
+  onProjectUpdated,
   onClose,
-}: DeleteProjectModalContentProps) {
+}: StartProjectModalContentProops) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { refetch: projectsRefetch } = useProjects();
-  const navigate = useNavigate();
 
-  const handleDeleteProject = async () => {
+  const handleStartProject = async () => {
     setIsSubmitting(true);
 
     const { error } = await supabase
       .from("projects")
-      .delete()
+      .update({ status: "run" })
       .eq("id", project.id);
 
     if (error) {
-      toast.error("Failed to delete project. Please try again.");
+      toast.error("Failed to start project. Please try again.");
     } else {
-      toast.success("Project deleted successfully!");
-      navigate("/projects");
-      projectsRefetch();
+      toast.success("Project started successfully!");
+      onProjectUpdated();
     }
 
     setIsSubmitting(false);
@@ -45,7 +42,7 @@ function DeleteProjectModalContent({
     <div className="flex w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
-          Delete Project
+          Start Project
         </h2>
 
         <Button
@@ -58,8 +55,7 @@ function DeleteProjectModalContent({
       </div>
 
       <p className="font-roboto tracking-0.1 text-gray-800">
-        Are you sure you want to delete this project?{" "}
-        <span className="font-medium">This action cannot be undone.</span>
+        Are you sure you want to start this project?
       </p>
 
       <div className="flex justify-end">
@@ -73,9 +69,10 @@ function DeleteProjectModalContent({
           />
 
           <PreMadeButtons
-            type="delete"
-            text="Delete"
-            onClick={handleDeleteProject}
+            type="confirm"
+            text="Start"
+            onClick={handleStartProject}
+            icon={<TimerStart size="16" variant="Linear" />}
             disabled={isSubmitting}
             className="w-full"
           />
@@ -85,4 +82,4 @@ function DeleteProjectModalContent({
   );
 }
 
-export default DeleteProjectModalContent;
+export default StartProjectModalContent;

@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Clock,
   Paperclip2,
@@ -30,6 +30,7 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,7 +91,11 @@ function ProjectCard({ project }: ProjectCardProps) {
       {
         icon: <Edit size="16" variant="Linear" />,
         label: "Edit",
-        onClick: () => navigate(`/projects/${project.id}`),
+        onClick: () => {
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.set("mode", "edit");
+          navigate(`/projects/${project.id}?${newSearchParams.toString()}`);
+        },
       },
       {
         icon: <Trash size="16" variant="Linear" />,

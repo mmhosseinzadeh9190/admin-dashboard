@@ -6,10 +6,11 @@ export function useProjects() {
     data: projects,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
 
-  return { projects, isLoading, error };
+  return { projects, isLoading, error, refetch };
 }

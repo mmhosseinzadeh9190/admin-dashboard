@@ -13,9 +13,14 @@ import { iconColor } from "../styles/GlobalStyles";
 interface CustomUsersSelectProps {
   members: User[];
   onUserSelect: (member: User) => void;
+  disabled: boolean;
 }
 
-function CustomUsersSelect({ members, onUserSelect }: CustomUsersSelectProps) {
+function CustomUsersSelect({
+  members,
+  onUserSelect,
+  disabled,
+}: CustomUsersSelectProps) {
   const [selected, setSelected] = useState(members[0]);
 
   const placeholderAvatar = "/public/avatarPlaceholder.png";
@@ -28,7 +33,10 @@ function CustomUsersSelect({ members, onUserSelect }: CustomUsersSelectProps) {
   return (
     <div className="w-52">
       <Listbox value={selected} onChange={handleChange}>
-        <ListboxButton className="relative flex w-full items-center gap-2.5 rounded-lg border border-gray-200 bg-white py-2 pl-3 pr-9 focus:outline-none">
+        <ListboxButton
+          disabled={disabled}
+          className="relative flex w-full items-center gap-2.5 rounded-lg border border-gray-200 bg-white py-2 pl-3 pr-9 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100"
+        >
           <img
             src={selected.avatar_url || placeholderAvatar}
             alt=""

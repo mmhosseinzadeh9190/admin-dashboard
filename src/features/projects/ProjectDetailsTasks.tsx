@@ -68,6 +68,7 @@ function ProjectDetailsTasks({
             return (
               <div key={index} className="flex items-center gap-3">
                 <input
+                  id={`task-checkbox-${index}`}
                   type="checkbox"
                   aria-label="checkbox"
                   checked={isChecked}
@@ -76,9 +77,12 @@ function ProjectDetailsTasks({
                   readOnly
                 />
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
-                  <span className="max-w-3xl truncate font-roboto tracking-0.1 text-gray-800">
+                  <label
+                    htmlFor={`task-checkbox-${index}`}
+                    className="max-w-3xl truncate font-roboto tracking-0.1 text-gray-800"
+                  >
                     {task}
-                  </span>
+                  </label>
                   <span className="flex items-center gap-1 font-roboto text-sm tracking-0.1 text-gray-600">
                     <Calendar size="16" color={iconColor} variant="Linear" />
                     {formatISODateToCustomFormat(schedule?.date!)}

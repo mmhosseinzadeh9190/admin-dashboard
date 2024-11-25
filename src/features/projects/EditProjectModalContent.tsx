@@ -64,6 +64,13 @@ function EditProjectModalContent({
   const [tags, setTags] = useState(project.tags || []);
   const [newTag, setNewTag] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const notChanged =
+    project.name === projectName &&
+    project.description === description &&
+    JSON.stringify(project.attachments) === JSON.stringify(attachments) &&
+    JSON.stringify(project.tasks) === JSON.stringify(tasks) &&
+    JSON.stringify(project.tasks_done) === JSON.stringify(completedTasks) &&
+    JSON.stringify(project.tags) === JSON.stringify(tags);
 
   const handleDeleteAttachment = async (attachment: string) => {
     const { data: activitiesData, error: activitiesDataFetchError } =
@@ -417,7 +424,11 @@ function EditProjectModalContent({
           Edit Project
         </h2>
 
-        <Button onClick={onClose} className="text-gray-600 hover:text-gray-700">
+        <Button
+          onClick={onClose}
+          disabled={isSubmitting}
+          className="text-gray-600 hover:text-gray-700 disabled:cursor-not-allowed"
+        >
           <CloseSquare size="20" variant="Linear" />
         </Button>
       </div>
@@ -426,17 +437,20 @@ function EditProjectModalContent({
         <EditProjectModalContentProjectName
           projectName={projectName}
           setProjectName={setProjectName}
+          disabled={isSubmitting}
         />
 
         <EditProjectModalContentProjectDescription
           description={description}
           setDescription={setDescription}
+          disabled={isSubmitting}
         />
 
         <EditProjectModalContentProjectAttachments
           attachments={attachments}
           handleRemoveAttachment={handleRemoveAttachment}
           handleAddAttachment={handleAddAttachment}
+          disabled={isSubmitting}
         />
 
         <EditProjectModalContentProjectTaskList
@@ -453,6 +467,7 @@ function EditProjectModalContent({
           teamMembersAsUsers={teamMembersAsUsers}
           handleUserSelect={handleUserSelect}
           handleAddTask={handleAddTask}
+          disabled={isSubmitting}
         />
 
         <EditProjectModalContentTags
@@ -461,13 +476,15 @@ function EditProjectModalContent({
           newTag={newTag}
           setNewTag={setNewTag}
           handleAddTag={handleAddTag}
+          disabled={isSubmitting}
         />
       </div>
 
       <div className="mb-2 flex justify-end">
         <EditProjectModalContentButtons
           onClose={onClose}
-          isSubmitting={isSubmitting}
+          disabled={isSubmitting}
+          notChanged={notChanged}
           handleSave={handleSave}
         />
       </div>

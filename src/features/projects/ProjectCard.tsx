@@ -24,6 +24,10 @@ import { useUser } from "../authentication/useUser";
 import Spinner from "../../ui/Spinner";
 import CustomDropdown from "../../ui/CustomDropdown";
 import Modal from "../../ui/Modal";
+import DeleteProjectModalContent from "./DeleteProjectModalContent";
+import StartProjectModalContent from "./StartProjectModalContent";
+import { useProjects } from "./useProjects";
+import CompleteProjectModalContent from "./CompleteProjectModalContent";
 
 interface ProjectCardProps {
   project: Project;
@@ -39,6 +43,7 @@ function ProjectCard({ project }: ProjectCardProps) {
   const { user } = useUser();
   const { teams, isLoading: teamsIsLoading, error: teamsError } = useTeams();
   const { users, isLoading: usersIsLoading, error: usersError } = useUsers();
+  const { refetch: projectsRefetch } = useProjects();
 
   if (teamsIsLoading || usersIsLoading) return <Spinner />;
 
@@ -101,7 +106,12 @@ function ProjectCard({ project }: ProjectCardProps) {
         icon: <Trash size="16" variant="Linear" />,
         label: "Delete",
         onClick: () =>
-          handleOpenModal(<p>Are you sure you want to delete this project?</p>),
+          handleOpenModal(
+            <DeleteProjectModalContent
+              project={project}
+              onClose={handleCloseModal}
+            />,
+          ),
       },
     );
   }
@@ -111,7 +121,13 @@ function ProjectCard({ project }: ProjectCardProps) {
       icon: <TimerStart size="16" variant="Linear" />,
       label: "Start",
       onClick: () =>
-        handleOpenModal(<p>Are you sure you want to start this project?</p>),
+        handleOpenModal(
+          <StartProjectModalContent
+            project={project}
+            onProjectUpdated={projectsRefetch}
+            onClose={handleCloseModal}
+          />,
+        ),
     });
   }
 
@@ -121,7 +137,11 @@ function ProjectCard({ project }: ProjectCardProps) {
       label: "Done",
       onClick: () =>
         handleOpenModal(
-          <p>Are you sure you want to mark this project as done?</p>,
+          <CompleteProjectModalContent
+            project={project}
+            onProjectUpdated={projectsRefetch}
+            onClose={handleCloseModal}
+          />,
         ),
     });
   }

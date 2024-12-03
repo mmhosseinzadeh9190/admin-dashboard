@@ -1,15 +1,30 @@
 import ProjectCard from "./ProjectCard";
 import { Add } from "iconsax-react";
-import { iconColor } from "../../styles/GlobalStyles";
 import EmptyState from "./EmptyState";
 import Button from "../../ui/Button";
 import { Project } from "../../services/apiProjects";
+import { ReactNode, useState } from "react";
+import Modal from "../../ui/Modal";
+import AddProjectModalContent from "./AddProjectModalContent";
 interface ProjectsColumnProps {
   status: "done" | "pending" | "run";
   projects: Project[];
 }
 
 function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<ReactNode>(null);
+
+  const handleOpenModal = (content: ReactNode) => {
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+  };
+
   const filteredProjects = projects?.filter(
     (project) => project.status === status,
   );
@@ -22,9 +37,10 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
         <h2 className="font-semibold capitalize tracking-0.1 text-gray-700">
           {status}
         </h2>
-        <Button className="select-none">
-          <img src="/src/assets/ellipsis.svg" alt="Options" />
-        </Button>
+
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          {modalContent}
+        </Modal>
       </div>
       <div
         className={`px-1.5 ${filteredProjects?.length !== 0 ? "overflow-y-scroll" : ""}`}
@@ -40,10 +56,18 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
         </div>
       </div>
       <Button
-        className={`flex justify-center border-t border-gray-200 bg-white py-2 ${filteredProjects?.length !== 0 ? "mt-auto" : ""}`}
+        className={`flex justify-center border-t border-gray-200 bg-white py-2 text-gray-600 hover:text-gray-700 ${filteredProjects?.length !== 0 ? "mt-auto" : ""}`}
         aria-label="add button"
+        onClick={() =>
+          handleOpenModal(
+            <AddProjectModalContent
+              status={status}
+              onClose={handleCloseModal}
+            />,
+          )
+        }
       >
-        <Add size="32" color={iconColor} variant="Linear" />
+        <Add size="32" variant="Linear" />
       </Button>
     </div>
   );

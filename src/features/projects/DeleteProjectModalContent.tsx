@@ -22,23 +22,56 @@ function DeleteProjectModalContent({
   const navigate = useNavigate();
 
   const handleDeleteProject = async () => {
-    setIsSubmitting(true);
+    try {
+      setIsSubmitting(true);
 
-    const { error } = await supabase
-      .from("projects")
-      .delete()
-      .eq("id", project.id);
+      if (project.attachments?.length! > 0) {
+        for (const attachment of project.attachments!) {
+          const { error: storageDeleteError } = await supabase.storage
+            .from("projects-images")
+            .remove([`${attachment.split("/").pop()}`]);
+          if (storageDeleteError) {
+            throw new Error(storageDeleteError.message);
+          }
+        }
+      }
 
-    if (error) {
-      toast.error("Failed to delete project. Please try again.");
-    } else {
+      const { error: activitiesError } = await supabase
+        .from("activities")
+        .delete()
+        .eq("project_id", project.id);
+
+      if (activitiesError) {
+        throw new Error(activitiesError.message);
+      }
+
+      const { error: schedulesError } = await supabase
+        .from("schedules")
+        .delete()
+        .eq("project_id", project.id);
+
+      if (schedulesError) {
+        throw new Error(schedulesError.message);
+      }
+
+      const { error: projectError } = await supabase
+        .from("projects")
+        .delete()
+        .eq("id", project.id);
+
+      if (projectError) {
+        throw new Error(projectError.message);
+      }
+
       toast.success("Project deleted successfully!");
       navigate("/projects");
       projectsRefetch();
+      onClose();
+    } catch (error) {
+      toast.error("Failed to delete project. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
-    onClose();
   };
 
   return (

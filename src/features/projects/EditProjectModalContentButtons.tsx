@@ -3,14 +3,14 @@ import PreMadeButtons from "../../ui/PreMadeButtons";
 interface EditProjectModalContentButtonsProps {
   onClose: () => void;
   disabled: boolean;
-  notChanged: boolean;
+  notConfirmed: boolean;
   handleSave: () => Promise<void>;
 }
 
 function EditProjectModalContentButtons({
   onClose,
   disabled,
-  notChanged,
+  notConfirmed,
   handleSave,
 }: EditProjectModalContentButtonsProps) {
   return (
@@ -27,7 +27,7 @@ function EditProjectModalContentButtons({
         type="confirm"
         text="Confirm"
         onClick={handleSave}
-        disabled={notChanged || disabled}
+        disabled={disabled || notConfirmed}
         className="w-full"
       />
     </div>

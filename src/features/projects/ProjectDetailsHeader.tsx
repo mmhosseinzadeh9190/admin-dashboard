@@ -45,7 +45,7 @@ function ProjectDetailsHeader({ project, users }: ProjectDetailsHeaderProps) {
 
         <span className="font-roboto text-sm tracking-0.1 text-gray-800">
           Created by{" "}
-          <span className="cursor-pointer text-primary-800 hover:text-primary-900 hover:underline">
+          <span className="cursor-pointer font-medium text-primary-800 hover:text-primary-900 hover:underline">
             {projectLeader}
           </span>
           , on <span className="text-gray-700">{projectCreatedAt}</span>

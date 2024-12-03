@@ -410,10 +410,11 @@ function EditProjectModalContent({
 
       toast.success("Project updated successfully!");
       onProjectUpdated();
-      setIsSubmitting(false);
       onClose();
     } catch (error) {
       toast.error("Failed to update project. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -484,7 +485,7 @@ function EditProjectModalContent({
         <EditProjectModalContentButtons
           onClose={onClose}
           disabled={isSubmitting}
-          notChanged={notChanged}
+          notConfirmed={notChanged}
           handleSave={handleSave}
         />
       </div>

@@ -116,3 +116,18 @@
 .react-datepicker__navigation:hover *::before {
   border-color: #92929d;
 }
+
+.react-datepicker-container {
+  .react-datepicker__view-calendar-icon input {
+    width: 100%;
+    background-color: #fafafb;
+  }
+
+  .react-datepicker__view-calendar-icon input:disabled {
+    background-color: #f1f1f5;
+  }
+
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+}

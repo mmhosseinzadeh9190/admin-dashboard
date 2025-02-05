@@ -44,20 +44,23 @@ function CustomTeamsSelect({
         <Listbox value={selected} onChange={handleChange}>
           <ListboxButton
             disabled={disabled}
-            className="relative flex w-full items-center gap-2.5 rounded-lg border border-gray-200 bg-gray-100 py-2 pl-3 pr-9 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
+            className="relative flex w-full items-center gap-2.5 rounded-xl border border-gray-200 bg-gray-100 py-2.5 pl-3.5 pr-10 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
           >
-            <img
-              src={selected.team_logo || placeholderImage}
-              alt=""
-              onError={(e) => addDefaultSrc(e, "avatar")}
-              className="h-5 w-5 rounded-md object-cover object-center"
-            />
+            <span className="flex h-5 w-5 items-center justify-center rounded-md">
+              <img
+                src={selected.team_logo || placeholderImage}
+                alt=""
+                onError={(e) => addDefaultSrc(e, "image")}
+                className="h-5 rounded-md object-cover object-center"
+              />
+            </span>
+
             <span className="truncate font-roboto text-sm tracking-0.1 text-gray-800">
               {capitalizeAllFirstLetters(selected.name!)}
             </span>
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute right-2.5 top-2.5"
+              className="pointer-events-none absolute right-3.5 top-3"
             >
               <ArrowDown2 size="16" color={iconColor} variant="Linear" />
             </span>
@@ -74,12 +77,14 @@ function CustomTeamsSelect({
                 className="group cursor-pointer select-none rounded-md px-3 py-1.5 hover:bg-gray-200"
               >
                 <div className="flex items-center gap-2.5">
-                  <img
-                    src={team.team_logo || placeholderImage}
-                    alt=""
-                    onError={(e) => addDefaultSrc(e, "avatar")}
-                    className="h-5 w-5 rounded-md object-cover object-center"
-                  />
+                  <span className="flex h-5 w-5 items-center justify-center rounded-md">
+                    <img
+                      src={team.team_logo || placeholderImage}
+                      alt=""
+                      onError={(e) => addDefaultSrc(e, "image")}
+                      className="h-5 rounded-md object-cover object-center"
+                    />
+                  </span>
                   <span className="truncate font-roboto text-sm tracking-0.1 text-gray-700 group-hover:text-gray-800">
                     {capitalizeAllFirstLetters(team.name!)}
                   </span>

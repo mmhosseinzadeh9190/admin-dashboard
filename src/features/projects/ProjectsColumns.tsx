@@ -1,11 +1,23 @@
 import Spinner from "../../ui/Spinner";
+import { useTeams } from "../dashboard/useTeams";
 import ProjectsColumn from "./ProjectsColumn";
 import { useProjects } from "./useProjects";
 
 function ProjectsColumns() {
-  const { projects, isLoading, error } = useProjects();
+  const {
+    projects,
+    isLoading: projectsIsLoading,
+    error: projectsError,
+  } = useProjects();
 
-  if (isLoading) return <Spinner />;
+  const {
+    teams,
+    isLoading: teamsIsLoading,
+    error: teamsError,
+    refetch: teamsRefetch,
+  } = useTeams();
+
+  if (projectsIsLoading || teamsIsLoading) return <Spinner />;
 
   const statuses: Array<"pending" | "run" | "done"> = [
     "pending",
@@ -21,6 +33,7 @@ function ProjectsColumns() {
             key={status}
             status={status}
             projects={projects?.data!}
+            teams={teams?.data!}
           />
         ))}
       </div>

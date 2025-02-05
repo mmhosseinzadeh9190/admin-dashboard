@@ -7,12 +7,16 @@ import { ReactNode, useState } from "react";
 import Modal from "../../ui/Modal";
 import AddProjectModalContent from "./AddProjectModalContent";
 import { useSearchParams } from "react-router-dom";
+import { Team } from "../../services/apiTeams";
+import { useUser } from "../authentication/useUser";
 interface ProjectsColumnProps {
   status: "done" | "pending" | "run";
   projects: Project[];
+  teams: Team[];
 }
 
-function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
+function ProjectsColumn({ status, projects, teams }: ProjectsColumnProps) {
+  const { user } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
   const [searchParams] = useSearchParams();
@@ -28,7 +32,16 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
     setModalContent(null);
   };
 
-  const filteredProjects = projects?.filter(
+  const userTeamsProjectsId =
+    teams
+      .filter((team) => team.members?.includes(String(user?.id)))
+      .flatMap((team) => team.projects_id) || [];
+
+  const userProjects = userTeamsProjectsId.flatMap((id) =>
+    projects.filter((project) => project.id === +id!),
+  );
+
+  const filteredProjects = userProjects.filter(
     (project) => project.status === status,
   );
 

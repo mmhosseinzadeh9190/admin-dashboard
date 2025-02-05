@@ -6,10 +6,11 @@ export function useTeams() {
     data: teams,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["teams"],
     queryFn: getTeams,
   });
 
-  return { teams, isLoading, error };
+  return { teams, isLoading, error, refetch };
 }

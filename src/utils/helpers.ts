@@ -75,3 +75,16 @@ export function generateUniqueId() {
   const randomNum = Math.floor(Math.random() * 1000);
   return timestamp + randomNum;
 }
+
+export async function urlToFile(url: string): Promise<File> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch the image.");
+  }
+  const blob = await response.blob();
+  const mimeType = blob.type;
+  const urlSegments = url.split("/");
+  const lastSegment = urlSegments[urlSegments.length - 1];
+  const filename = lastSegment.split(".")[0];
+  return new File([blob], filename, { type: mimeType });
+}

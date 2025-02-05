@@ -8,6 +8,7 @@ import {
   Eye,
   Trash,
   TimerStart,
+  TextalignLeft,
 } from "iconsax-react";
 import { iconColor } from "../../styles/GlobalStyles";
 import {
@@ -31,9 +32,10 @@ import CompleteProjectModalContent from "./CompleteProjectModalContent";
 
 interface ProjectCardProps {
   project: Project;
+  fullHeight?: boolean;
 }
 
-function ProjectCard({ project }: ProjectCardProps) {
+function ProjectCard({ project, fullHeight }: ProjectCardProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -109,6 +111,7 @@ function ProjectCard({ project }: ProjectCardProps) {
           handleOpenModal(
             <DeleteProjectModalContent
               project={project}
+              teams={teams?.data!}
               onClose={handleCloseModal}
             />,
           ),
@@ -146,8 +149,14 @@ function ProjectCard({ project }: ProjectCardProps) {
     });
   }
 
+  const projectDescription =
+    capitalizeFirstLetter(project.description!) ||
+    "There is no description for this project!";
+
   return (
-    <div className="flex flex-col gap-1.5 rounded-2.5xl bg-white p-4 shadow-sm">
+    <div
+      className={`flex ${fullHeight ? "min-w-96 overflow-y-auto" : ""} flex-col gap-1.5 rounded-2.5xl bg-white p-4 shadow-sm`}
+    >
       <div className="flex items-center justify-between gap-4">
         <h3
           className={`truncate text-sm font-semibold tracking-0.1 text-gray-900 ${
@@ -169,19 +178,17 @@ function ProjectCard({ project }: ProjectCardProps) {
         </Modal>
       </div>
 
-      <>
-        {teams?.data?.map(
-          (team) =>
-            team.id === project.team && (
-              <div
-                key={team.id}
-                className="font-roboto text-sm tracking-0.1 text-gray-700"
-              >
-                {capitalizeFirstLetter(team.name!)}
-              </div>
-            ),
-        )}
-      </>
+      {teams?.data?.map(
+        (team) =>
+          team.id === project.team && (
+            <div
+              key={team.id}
+              className="font-roboto text-sm tracking-0.1 text-gray-700"
+            >
+              {capitalizeFirstLetter(team.name!)}
+            </div>
+          ),
+      )}
 
       <div
         className={`flex gap-5 ${project.status === "done" ? "mt-4" : "mt-2"}`}
@@ -238,6 +245,37 @@ function ProjectCard({ project }: ProjectCardProps) {
           </div>
         )}
       </div>
+
+      {fullHeight ? (
+        <>
+          <div className="mb-auto mt-4 flex gap-1">
+            <span>
+              <TextalignLeft size="16" className="text-gray-600" />
+            </span>
+            <div className="flex flex-col gap-1 overflow-hidden whitespace-normal">
+              <h3 className="font-roboto text-sm/4 tracking-0.1 text-gray-800">
+                Description
+              </h3>
+              <p className="max-w-80 truncate font-roboto text-sm tracking-0.1 text-gray-700">
+                {projectDescription}
+              </p>
+            </div>
+          </div>
+
+          {project.tags!.length > 0 && (
+            <div className="mt-2 flex max-h-[2.125rem] flex-wrap items-center gap-2 overflow-hidden">
+              {project.tags!.map((tag, index) => (
+                <span
+                  key={index}
+                  className="relative flex max-w-48 cursor-default items-center justify-center truncate rounded-full border border-primary-100 bg-primary-50 px-3 py-2 text-xs font-medium tracking-0.1 text-primary-800"
+                >
+                  {tag.toLowerCase()}
+                </span>
+              ))}
+            </div>
+          )}
+        </>
+      ) : null}
     </div>
   );
 }

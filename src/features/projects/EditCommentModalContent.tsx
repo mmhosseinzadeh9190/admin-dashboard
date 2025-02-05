@@ -52,7 +52,7 @@ function EditCommentModalContent({
   };
 
   return (
-    <div className="flex w-96 flex-col gap-6">
+    <div className="flex w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Edit Comment

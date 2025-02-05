@@ -72,6 +72,10 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+.react-datepicker__day--disabled {
+  color: #92929d;
+}
+
 .react-datepicker__day:not([aria-disabled="true"]):hover,
 .react-datepicker__month-text:not([aria-disabled="true"]):hover,
 .react-datepicker__quarter-text:not([aria-disabled="true"]):hover,
@@ -91,17 +95,13 @@
   letter-spacing: 0.1px;
 }
 
-.react-datepicker__view-calendar-icon input {
-  padding: 0.5rem 0.75rem 0.5rem 2rem;
-}
-
 .react-datepicker__input-container {
   display: flex;
   align-items: center;
 }
 
 .react-datepicker__input-container .react-datepicker__calendar-icon {
-  padding: 0.625rem;
+  padding: 0.625rem 0.625rem 0.625rem 0.875rem;
 }
 
 .react-datepicker__year-read-view--down-arrow,
@@ -117,17 +117,14 @@
   border-color: #92929d;
 }
 
-.react-datepicker-container {
-  .react-datepicker__view-calendar-icon input {
-    width: 100%;
-    background-color: #fafafb;
-  }
+.react-datepicker-wrapper {
+  width: 100%;
+}
 
-  .react-datepicker__view-calendar-icon input:disabled {
-    background-color: #f1f1f5;
-  }
+.full-width-padding {
+  padding: 0.75rem 0.875rem 0.75rem 2.5rem !important;
+}
 
-  .react-datepicker-wrapper {
-    width: 100%;
-  }
+.normal-width-padding {
+  padding: 0.625rem 0.75rem 0.625rem 2.375rem !important;
 }

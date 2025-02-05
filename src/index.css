@@ -5,6 +5,7 @@
 @layer components {
   ::-webkit-scrollbar {
     width: 4px;
+    height: 0;
   }
 
   ::-webkit-scrollbar-track {
@@ -19,5 +20,19 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: #b5b5be;
+  }
+
+  ::selection {
+    background: #d5d5dc;
+    color: #171725;
+  }
+
+  input,
+  textarea {
+    caret-color: #696974;
+  }
+
+  .h-d {
+    height: calc(100% - 36px);
   }
 }

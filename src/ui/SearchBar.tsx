@@ -22,7 +22,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mr-auto max-w-md">
+    <form onSubmit={handleSubmit} className="mr-auto w-72">
       <label htmlFor="search" className="sr-only">
         Search
       </label>

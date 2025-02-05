@@ -7,19 +7,29 @@ import supabase from "../../services/supabase";
 import toast from "react-hot-toast";
 import { useProjects } from "./useProjects";
 import { useNavigate } from "react-router-dom";
+import { Team } from "../../services/apiTeams";
 
 interface DeleteProjectModalContentProps {
   project: Project;
+  teams: Team[];
   onClose: () => void;
 }
 
 function DeleteProjectModalContent({
   project,
+  teams,
   onClose,
 }: DeleteProjectModalContentProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { refetch: projectsRefetch } = useProjects();
   const navigate = useNavigate();
+  const projectTeamId = project.team;
+  const teamProjectsId = teams.find(
+    (team) => team.id === projectTeamId,
+  )?.projects_id;
+  const filteredTeamProjectsId = teamProjectsId?.filter(
+    (id) => +id !== project.id,
+  );
 
   const handleDeleteProject = async () => {
     try {
@@ -63,6 +73,15 @@ function DeleteProjectModalContent({
         throw new Error(projectError.message);
       }
 
+      const { error: updateTeamError } = await supabase
+        .from("teams")
+        .update({ projects_id: filteredTeamProjectsId })
+        .eq("id", projectTeamId);
+
+      if (updateTeamError) {
+        throw new Error(updateTeamError.message);
+      }
+
       toast.success("Project deleted successfully!");
       navigate("/projects");
       projectsRefetch();
@@ -96,7 +115,7 @@ function DeleteProjectModalContent({
       </p>
 
       <div className="flex justify-end">
-        <div className="flex w-1/2 gap-3">
+        <div className="flex w-2/3 gap-3">
           <PreMadeButtons
             type="cancel"
             text="Cancel"

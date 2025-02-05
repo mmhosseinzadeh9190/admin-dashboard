@@ -8,7 +8,7 @@ import { Team } from "../../services/apiTeams";
 import supabase from "../../services/supabase";
 import Button from "../../ui/Button";
 import { generateUniqueId } from "../../utils/helpers";
-import EditProjectModalContentProjectName from "./EditProjectModalContentProjectName";
+import ModalContentNameInput from "./ModalContentNameInput";
 import EditProjectModalContentProjectDescription from "./EditProjectModalContentProjectDescription";
 import EditProjectModalContentProjectAttachments from "./EditProjectModalContentProjectAttachments";
 import EditProjectModalContentProjectTaskList from "./EditProjectModalContentProjectTaskList";
@@ -65,7 +65,7 @@ function EditProjectModalContent({
   const [newTag, setNewTag] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notChanged =
-    project.name === projectName &&
+    (projectName === project.name || projectName === "") &&
     project.description === description &&
     JSON.stringify(project.attachments) === JSON.stringify(attachments) &&
     JSON.stringify(project.tasks) === JSON.stringify(tasks) &&
@@ -353,7 +353,12 @@ function EditProjectModalContent({
     try {
       setIsSubmitting(true);
 
-      const status = tasks.length === completedTasks.length ? "done" : "run";
+      const status =
+        tasks.length === 0 && completedTasks.length === 0
+          ? project.status
+          : tasks.length === completedTasks.length
+            ? "done"
+            : "run";
 
       const updatedProject = {
         ...project,
@@ -435,9 +440,9 @@ function EditProjectModalContent({
       </div>
 
       <div className="-mr-8 flex flex-col gap-8 overflow-y-scroll pr-8">
-        <EditProjectModalContentProjectName
-          projectName={projectName}
-          setProjectName={setProjectName}
+        <ModalContentNameInput
+          name={projectName}
+          setName={setProjectName}
           disabled={isSubmitting}
         />
 
@@ -468,6 +473,7 @@ function EditProjectModalContent({
           teamMembersAsUsers={teamMembersAsUsers}
           handleUserSelect={handleUserSelect}
           handleAddTask={handleAddTask}
+          deadline={project.deadline!}
           disabled={isSubmitting}
         />
 

@@ -6,6 +6,7 @@ import { Project } from "../../services/apiProjects";
 import { ReactNode, useState } from "react";
 import Modal from "../../ui/Modal";
 import AddProjectModalContent from "./AddProjectModalContent";
+import { useSearchParams } from "react-router-dom";
 interface ProjectsColumnProps {
   status: "done" | "pending" | "run";
   projects: Project[];
@@ -14,6 +15,8 @@ interface ProjectsColumnProps {
 function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [searchParams] = useSearchParams();
+  const filterValue = searchParams.get("sortBy") || "project-name";
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);
@@ -28,6 +31,28 @@ function ProjectsColumn({ status, projects }: ProjectsColumnProps) {
   const filteredProjects = projects?.filter(
     (project) => project.status === status,
   );
+
+  filteredProjects?.sort((a, b) => {
+    switch (filterValue) {
+      case "due-date":
+        return (
+          new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime()
+        );
+
+      case "project-tasks":
+        const remainingTasksA =
+          (a.tasks?.length || 0) - (a.tasks_done?.length || 0);
+        const remainingTasksB =
+          (b.tasks?.length || 0) - (b.tasks_done?.length || 0);
+        return remainingTasksA - remainingTasksB;
+
+      case "project-name":
+        return (a.name || "").localeCompare(b.name || "");
+
+      default:
+        return (a.name || "").localeCompare(b.name || "");
+    }
+  });
 
   return (
     <div

@@ -27,6 +27,7 @@ interface EditProjectModalContentProjectTaskListProps {
   teamMembersAsUsers: User[] | undefined;
   handleUserSelect: (member: User) => void;
   handleAddTask: () => void;
+  deadline: string;
   disabled: boolean;
 }
 
@@ -44,6 +45,7 @@ function EditProjectModalContentProjectTaskList({
   teamMembersAsUsers,
   handleUserSelect,
   handleAddTask,
+  deadline,
   disabled,
 }: EditProjectModalContentProjectTaskListProps) {
   const placeholderImage = "/public/imagePlaceholder.png";
@@ -172,6 +174,7 @@ function EditProjectModalContentProjectTaskList({
         <span className="absolute right-3 top-[3.2px] flex items-center gap-3">
           <CustomDatePicker
             onDateChange={handleDateChange}
+            deadline={deadline}
             disabled={disabled}
           />
 

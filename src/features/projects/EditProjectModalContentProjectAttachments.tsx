@@ -65,7 +65,7 @@ function EditProjectModalContentProjectAttachments({
           <Button
             onClick={handleClickInput}
             disabled={disabled}
-            className="group flex h-36 w-48 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 transition-all duration-100 hover:border-gray-400 disabled:cursor-not-allowed disabled:bg-gray-200"
+            className="group flex min-h-36 min-w-48 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-100 transition-all duration-100 hover:border-gray-400 disabled:cursor-not-allowed disabled:bg-gray-200"
           >
             <span className="text-gray-600 transition-all duration-100 group-hover:text-gray-700">
               <Add size="28" variant="Linear" />

@@ -112,6 +112,7 @@ function ProjectDetailsFooterButtons({
               handleOpenModal(
                 <DeleteProjectModalContent
                   project={project}
+                  teams={teams?.data!}
                   onClose={handleCloseModal}
                 />,
               )

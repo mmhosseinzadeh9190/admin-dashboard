@@ -6,7 +6,7 @@ import { CloseSquare } from "iconsax-react";
 import { generateUniqueId } from "../../utils/helpers";
 import { useUser } from "../authentication/useUser";
 import { useProjects } from "./useProjects";
-import EditProjectModalContentProjectName from "./EditProjectModalContentProjectName";
+import ModalContentNameInput from "./ModalContentNameInput";
 import EditProjectModalContentProjectDescription from "./EditProjectModalContentProjectDescription";
 import AddProjectModalContentProjectAttachments from "./AddProjectModalContentProjectAttachments";
 import EditProjectModalContentButtons from "./EditProjectModalContentButtons";
@@ -42,6 +42,7 @@ function AddProjectModalContent({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const emptyField = !(projectName.trim() && team && deadline);
+  const teamProjectsId = team?.projects_id;
 
   if (isLoading) return <Spinner />;
 
@@ -181,6 +182,15 @@ function AddProjectModalContent({
         }
       }
 
+      const { error: updateTeamError } = await supabase
+        .from("teams")
+        .update({ projects_id: [...teamProjectsId!, projectId] })
+        .eq("id", team?.id);
+
+      if (updateTeamError) {
+        throw new Error(updateTeamError.message);
+      }
+
       toast.success("Project added successfully!");
       projectsRefetch();
       onClose();
@@ -208,9 +218,9 @@ function AddProjectModalContent({
       </div>
 
       <div className="-mr-8 flex flex-col gap-8 overflow-y-scroll pr-8">
-        <EditProjectModalContentProjectName
-          projectName={projectName}
-          setProjectName={setProjectName}
+        <ModalContentNameInput
+          name={projectName}
+          setName={setProjectName}
           disabled={isSubmitting}
         />
 

@@ -1,5 +1,5 @@
 import Button from "../../ui/Button";
-import { Logout as LogoutIcon } from "iconsax-react";
+import { LogoutCurve as LogoutIcon } from "iconsax-react";
 import { useLogout } from "./useLogout";
 import Spinner from "../../ui/Spinner";
 
@@ -13,16 +13,14 @@ function Logout() {
 
   return (
     <Button
-      className={`mt-auto flex items-center ${isPending ? "justify-center" : ""} gap-3 rounded-md px-5 py-3 font-medium tracking-0.1 text-error-600 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100`}
+      className={`mt-auto flex items-center text-base/4 ${isPending ? "justify-center" : ""} gap-3 rounded-md px-5 py-3 font-medium tracking-0.1 text-error-600 hover:bg-gray-100 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100`}
       onClick={handleLogout}
       disabled={isPending}
     >
       {!isPending ? (
         <>
-          <span className="text-error-600">
-            <LogoutIcon size="20" variant="Linear" />
-          </span>
-          <span className="-mb-px">Logout</span>
+          <LogoutIcon size="20" variant="Linear" />
+          <span>Logout</span>
         </>
       ) : (
         <Spinner size="24" stroke="2" />

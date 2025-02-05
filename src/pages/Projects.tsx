@@ -12,13 +12,13 @@ function Projects() {
         <CustomSelect
           options={[
             { value: "project-name", label: "Project Name" },
-            { value: "project-type", label: "Project Type" },
+            { value: "project-tasks", label: "Project Tasks" },
             { value: "due-date", label: "Due Date" },
           ]}
         />
       </div>
 
-      <div style={{ height: `calc(100% - 36px)` }}>
+      <div className="h-d">
         <ProjectsColumns />
       </div>
     </div>

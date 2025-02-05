@@ -16,7 +16,11 @@ function AddProjectModalContentProjectDeadline({
       </span>
 
       <div className="react-datepicker-container">
-        <CustomDatePicker onDateChange={handleDateChange} disabled={disabled} />
+        <CustomDatePicker
+          onDateChange={handleDateChange}
+          fullWidth={true}
+          disabled={disabled}
+        />
       </div>
     </div>
   );

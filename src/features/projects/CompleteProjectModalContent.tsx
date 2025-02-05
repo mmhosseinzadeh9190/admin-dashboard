@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Button from "../../ui/Button";
 import { CloseSquare } from "iconsax-react";
 import PreMadeButtons from "../../ui/PreMadeButtons";
+import { capitalizeFirstLetter } from "../../utils/helpers";
 
 interface CompleteProjectModalContentProps {
   project: Project;
@@ -23,6 +24,8 @@ function CompleteProjectModalContent({
   const unfinishedTasks = project.tasks?.filter(
     (task) => !project.tasks_done?.includes(task),
   );
+
+  const notAllowed = completedTasks.length !== unfinishedTasks?.length;
 
   const handleCheckboxChange = (task: string) => {
     setCompletedTasks((prev) => {
@@ -82,8 +85,9 @@ function CompleteProjectModalContent({
       {unfinishedTasks?.length! > 0 && (
         <div className="flex flex-col gap-2.5">
           <p className="font-roboto text-sm font-medium tracking-0.1 text-gray-800">
-            In this project, there are still {unfinishedTasks?.length}{" "}
-            unfinished tasks.
+            In this project, there {unfinishedTasks?.length! > 1 ? "are" : "is"}{" "}
+            still {unfinishedTasks?.length} unfinished{" "}
+            {unfinishedTasks?.length! > 1 ? "tasks" : "task"}.
           </p>
 
           {unfinishedTasks?.map((task, index) => {
@@ -100,9 +104,9 @@ function CompleteProjectModalContent({
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
                   <label
                     htmlFor={`complete-modal-task-checkbox-${index}`}
-                    className="max-w-3xl truncate font-roboto text-sm tracking-0.1 text-gray-800"
+                    className="truncate font-roboto text-sm tracking-0.1 text-gray-800"
                   >
-                    {task}
+                    {capitalizeFirstLetter(task)}
                   </label>
                 </div>
               </div>
@@ -110,13 +114,15 @@ function CompleteProjectModalContent({
           })}
 
           <p className="font-roboto text-sm font-medium tracking-0.1 text-gray-800">
-            Please complete the above tasks to complete the project.
+            Please complete the above{" "}
+            {unfinishedTasks?.length! > 1 ? "tasks" : "task"} to be able to
+            complete the project.
           </p>
         </div>
       )}
 
       <div className="flex justify-end">
-        <div className="flex w-1/2 gap-3">
+        <div className="flex w-2/3 gap-3">
           <PreMadeButtons
             type="cancel"
             text="Cancel"
@@ -129,9 +135,7 @@ function CompleteProjectModalContent({
             type="confirm"
             text="Complete"
             onClick={handleCompleteProject}
-            disabled={
-              completedTasks.length !== unfinishedTasks?.length || isSubmitting
-            }
+            disabled={notAllowed || isSubmitting}
             className="w-full"
           />
         </div>

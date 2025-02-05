@@ -84,7 +84,7 @@ function ProjectDetailsTasks({
                     {task}
                   </label>
                   <span className="flex items-center gap-1 font-roboto text-sm tracking-0.1 text-gray-600">
-                    <Calendar size="16" color={iconColor} variant="Linear" />
+                    <Calendar size="16" variant="Linear" />
                     {formatISODateToCustomFormat(schedule?.date!)}
                   </span>
                   <span className="flex items-center gap-1">

@@ -104,7 +104,7 @@ function ActivityCard({ activity }: ActivityCardProps) {
                   src={photo || placeholderImage}
                   alt={`Uploaded photo ${name}`}
                   onError={(e) => addDefaultSrc(e, "image")}
-                  className="h-44 rounded-lg"
+                  className="h-44 rounded-xl"
                 />
               ))}
             </div>

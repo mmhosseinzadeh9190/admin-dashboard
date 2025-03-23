@@ -37,7 +37,7 @@ function AddTeamModalContentTeamLogo({
               src={URL.createObjectURL(logo) || placeholderImage}
               alt=""
               onError={(e) => addDefaultSrc(e, "image")}
-              className="h-36 rounded-lg"
+              className="h-36 rounded-xl"
             />
             {!disabled && (
               <Button

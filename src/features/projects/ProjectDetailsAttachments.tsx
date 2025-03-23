@@ -28,7 +28,7 @@ function ProjectDetailsAttachments({
               src={attachment || placeholderImage}
               alt=""
               onError={(e) => addDefaultSrc(e, "image")}
-              className="h-44 rounded-lg"
+              className="h-44 rounded-xl"
             />
           ))}
         </div>

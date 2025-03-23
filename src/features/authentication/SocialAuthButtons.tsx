@@ -42,16 +42,9 @@ function SocialAuthButtons({
           disabled={isPending}
           className="flex w-1/2 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-200"
         >
-          <img
-            src="/src/assets/twitter.svg"
-            alt=""
-            role="button"
-            className="h-5"
-          />
+          <img src="/src/assets/x.svg" alt="" role="button" className="h-5" />
           <span>
-            {actionType === "signup"
-              ? "Sign up with Twitter"
-              : "Log in with Twitter"}
+            {actionType === "signup" ? "Sign up with X" : "Log in with X"}
           </span>
         </Button>
       </div>
@@ -69,8 +62,8 @@ function SocialAuthButtons({
         />
         <span>
           {actionType === "signup"
-            ? "Sign up with GitHub"
-            : "Log in with GitHub"}
+            ? "Sign up with Github"
+            : "Log in with Github"}
         </span>
       </Button>
     </div>

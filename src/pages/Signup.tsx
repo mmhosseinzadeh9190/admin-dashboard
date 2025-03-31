@@ -42,7 +42,7 @@ function SignUp() {
     }
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
+      toast.error("Password and confirmation must be the same.");
       return;
     }
 

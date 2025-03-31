@@ -14,7 +14,7 @@ function Sidebar() {
   };
 
   return (
-    <aside className="row-span-full flex border-r border-gray-200 p-5">
+    <aside className="row-span-full flex border-r border-gray-200 bg-white p-5">
       <Button
         className="p-2 md:hidden"
         onClick={toggleSidebar}
@@ -24,7 +24,7 @@ function Sidebar() {
       </Button>
 
       <div
-        className={`fixed left-0 top-0 flex transform flex-col gap-8 bg-white text-gray-900 transition-transform ${isOpen ? "translate-x-0" : "-translate-x-full"} w-56 max-w-56 md:relative md:translate-x-0 md:translate-y-0`}
+        className={`fixed left-0 top-0 flex transform flex-col gap-8 text-gray-900 transition-transform ${isOpen ? "translate-x-0" : "-translate-x-full"} w-56 max-w-56 md:relative md:translate-x-0 md:translate-y-0`}
       >
         <Button
           className="absolute right-4 top-4 md:hidden"

@@ -4,7 +4,7 @@ import Button from "../../ui/Button";
 import PreMadeButtons from "../../ui/PreMadeButtons";
 import { logout, signInWithPassword } from "../../services/apiAuth";
 import toast from "react-hot-toast";
-import supabase, { supabaseSecret } from "../../services/supabase";
+import supabase, { supabaseServiceRole } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
 import { User } from "@supabase/supabase-js";
 import { Activity } from "../../services/apiActivity";
@@ -289,7 +289,9 @@ function DeleteAccountModalContent({
 
       await handleDeleteUser();
 
-      const { error } = await supabaseSecret.auth.admin.deleteUser(user.id);
+      const { error } = await supabaseServiceRole.auth.admin.deleteUser(
+        user.id,
+      );
       if (error) {
         throw new Error(error.message);
       }

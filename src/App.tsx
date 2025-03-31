@@ -16,6 +16,7 @@ import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./ui/AppLayout";
 import CustomizedToaster from "./ui/CustomizedToaster";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import { updateTheme } from "./utils/helpers";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,9 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const savedTheme = localStorage.getItem("theme");
+  updateTheme(savedTheme);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />

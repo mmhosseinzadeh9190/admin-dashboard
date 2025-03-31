@@ -6,6 +6,7 @@ export function useUser() {
     data: user,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
@@ -15,6 +16,7 @@ export function useUser() {
     user,
     isLoading,
     error,
+    refetch,
     isAuthenticated: user?.role === "authenticated",
   };
 }

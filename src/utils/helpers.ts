@@ -88,3 +88,21 @@ export async function urlToFile(url: string): Promise<File> {
   const filename = lastSegment.split(".")[0];
   return new File([blob], filename, { type: mimeType });
 }
+
+export function getUserDefaultTheme() {
+  return window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+export const updateTheme = (theme: string | null) => {
+  if (theme === null || theme === "auto") {
+    const defaultTheme = getUserDefaultTheme();
+    document.documentElement.classList = defaultTheme;
+    localStorage.setItem("theme", "auto");
+  } else {
+    document.documentElement.classList = theme;
+    localStorage.setItem("theme", theme);
+  }
+};

@@ -1,38 +1,23 @@
-import Spinner from "../../ui/Spinner";
 import {
   addDefaultSrc,
   capitalizeAllFirstLetters,
   extractTime,
 } from "../../utils/helpers";
 import { Activity } from "../../services/apiActivity";
-import { useProjects } from "../projects/useProjects";
-import { useUsers } from "../dashboard/useUsers";
+import { Project } from "../../services/apiProjects";
+import { User } from "../../services/apiUsers";
 
 interface ActivityCardProps {
   activity: Activity;
+  project: Project;
+  users: User[];
 }
 
-function ActivityCard({ activity }: ActivityCardProps) {
-  const {
-    projects,
-    isLoading: projectsIsLoading,
-    error: projectsError,
-  } = useProjects();
-
-  const { users, isLoading: usersIsLoading, error: usersError } = useUsers();
-
-  if (projectsIsLoading || usersIsLoading) return <Spinner />;
-
-  const project = projects?.data?.find(
-    (project) => project.id === activity.project_id,
-  );
-
+function ActivityCard({ activity, project, users }: ActivityCardProps) {
   const projectName =
     capitalizeAllFirstLetters(project?.name!) || "Unnamed Project";
 
-  const user = users?.data?.find(
-    (user) => String(user.id) === activity.user_id,
-  );
+  const user = users.find((user) => String(user.id) === activity.user_id);
 
   const name = capitalizeAllFirstLetters(user?.name!) || "Unknown User";
   const placeholderAvatar = "/public/avatarPlaceholder.png";
@@ -72,7 +57,7 @@ function ActivityCard({ activity }: ActivityCardProps) {
           src={userAvatar}
           alt=""
           onError={(e) => addDefaultSrc(e, "avatar")}
-          className="h-10 w-10 rounded-full object-cover object-center"
+          className="h-10 w-10 rounded-full border border-gray-200 object-cover object-center"
         />
         <div className="flex flex-col gap-1 overflow-hidden break-words">
           <p className="font-roboto font-semibold tracking-0.1 text-gray-800">

@@ -1,34 +1,20 @@
 import { ReactNode, useState } from "react";
 import CustomDropdown from "../../ui/CustomDropdown";
 import Modal from "../../ui/Modal";
-import Spinner from "../../ui/Spinner";
-import { useProjects } from "../projects/useProjects";
 import ProjectsRow from "./ProjectsRow";
-import { useTeams } from "./useTeams";
 import { AddSquare } from "iconsax-react";
 import AddProjectModalContent from "../projects/AddProjectModalContent";
+import { Project } from "../../services/apiProjects";
+import { Team } from "../../services/apiTeams";
 
-interface UserProjectsProps {}
+interface UserProjectsProps {
+  projects: { data: Project[] | null; error: string | null };
+  teams: { data: Team[] | null; error: string | null };
+}
 
-function UserProjects({}: UserProjectsProps) {
+function UserProjects({ projects, teams }: UserProjectsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
-
-  const {
-    projects,
-    isLoading: projectsIsLoading,
-    error: projectsError,
-    refetch: projectRefetch,
-  } = useProjects();
-
-  const {
-    teams,
-    isLoading: teamsIsLoading,
-    error: teamsError,
-    refetch: teamsRefetch,
-  } = useTeams();
-
-  if (projectsIsLoading || teamsIsLoading) return <Spinner />;
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);

@@ -43,7 +43,7 @@ function CustomUsersSelect({
             src={selected.avatar_url || placeholderAvatar}
             alt=""
             onError={(e) => addDefaultSrc(e, "avatar")}
-            className="h-5 w-5 rounded-full object-cover object-center"
+            className="h-5 w-5 rounded-full border border-gray-200 object-cover object-center"
           />
           <span className="truncate font-roboto text-sm tracking-0.1 text-gray-800">
             {capitalizeAllFirstLetters(selected.name!)}
@@ -64,14 +64,14 @@ function CustomUsersSelect({
             <ListboxOption
               key={member.id}
               value={member}
-              className="group cursor-pointer select-none rounded-md px-3 py-1.5 hover:bg-gray-200"
+              className="group cursor-pointer select-none rounded-md px-2.5 py-1.5 hover:bg-gray-200"
             >
               <div className="flex items-center gap-2.5">
                 <img
                   src={member.avatar_url || placeholderAvatar}
                   alt=""
                   onError={(e) => addDefaultSrc(e, "avatar")}
-                  className="h-5 w-5 rounded-full object-cover object-center"
+                  className="h-5 w-5 rounded-full border border-gray-200 object-cover object-center"
                 />
                 <span className="truncate font-roboto text-sm tracking-0.1 text-gray-700 group-hover:text-gray-800">
                   {capitalizeAllFirstLetters(member.name!)}

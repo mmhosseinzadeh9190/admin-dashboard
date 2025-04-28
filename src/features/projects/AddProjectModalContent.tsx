@@ -16,6 +16,7 @@ import Spinner from "../../ui/Spinner";
 import { Team } from "../../services/apiTeams";
 import AddProjectModalContentProjectDeadline from "./AddProjectModalContentProjectDeadline";
 import EditProjectModalContentTags from "./EditProjectModalContentTags";
+import { useNavigate } from "react-router-dom";
 
 interface AddProjectModalContentProps {
   status: "done" | "pending" | "run";
@@ -29,6 +30,7 @@ function AddProjectModalContent({
   const { user } = useUser();
   const { teams, isLoading, error } = useTeams();
   const { refetch: projectsRefetch } = useProjects();
+  const navigate = useNavigate();
 
   const userTeams = teams?.data?.filter((team) => team.leader_id === user?.id);
 
@@ -192,6 +194,7 @@ function AddProjectModalContent({
       }
 
       toast.success("Project added successfully!");
+      navigate(`/projects/${projectId}`);
       projectsRefetch();
       onClose();
     } catch (error) {
@@ -202,7 +205,7 @@ function AddProjectModalContent({
   };
 
   return (
-    <div className="flex h-xl w-4xl flex-col gap-8">
+    <div className="max-h-xl flex w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Add Project
@@ -217,7 +220,7 @@ function AddProjectModalContent({
         </Button>
       </div>
 
-      <div className="-mr-8 flex flex-col gap-8 overflow-y-scroll pr-8">
+      <div className="-mr-8 flex flex-col gap-6 overflow-y-scroll pr-7">
         <ModalContentNameInput
           name={projectName}
           setName={setProjectName}
@@ -230,18 +233,16 @@ function AddProjectModalContent({
           disabled={isSubmitting}
         />
 
-        <div className="flex items-start gap-8">
-          <AddProjectModalContentProjectTeam
-            userTeams={userTeams}
-            handleTeamSelect={handleTeamSelect}
-            disabled={isSubmitting}
-          />
+        <AddProjectModalContentProjectTeam
+          userTeams={userTeams}
+          handleTeamSelect={handleTeamSelect}
+          disabled={isSubmitting}
+        />
 
-          <AddProjectModalContentProjectDeadline
-            handleDateChange={handleDateChange}
-            disabled={isSubmitting}
-          />
-        </div>
+        <AddProjectModalContentProjectDeadline
+          handleDateChange={handleDateChange}
+          disabled={isSubmitting}
+        />
 
         <AddProjectModalContentProjectAttachments
           selectedImages={selectedImages}
@@ -260,7 +261,7 @@ function AddProjectModalContent({
         />
       </div>
 
-      <div className="mb-2 flex justify-end">
+      <div className="mt-auto flex justify-end">
         <EditProjectModalContentButtons
           onClose={onClose}
           disabled={isSubmitting}

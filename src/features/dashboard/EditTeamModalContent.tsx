@@ -199,7 +199,7 @@ function EditTeamModalContent({
   };
 
   return (
-    <div className="flex h-xl w-4xl flex-col gap-8">
+    <div className="flex max-h-xl w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Edit Team
@@ -214,7 +214,7 @@ function EditTeamModalContent({
         </Button>
       </div>
 
-      <div className="-mr-8 flex flex-col gap-8 overflow-y-scroll pr-8">
+      <div className="-mr-8 flex flex-col gap-6 overflow-y-scroll pr-7">
         <ModalContentNameInput
           name={teamName}
           setName={setTeamName}
@@ -238,7 +238,7 @@ function EditTeamModalContent({
         />
       </div>
 
-      <div className="mb-2 mt-auto flex justify-end">
+      <div className="mt-auto flex justify-end">
         <EditProjectModalContentButtons
           onClose={onClose}
           disabled={isSubmitting}

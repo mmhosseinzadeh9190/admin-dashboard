@@ -14,7 +14,7 @@ function EditProjectModalContentButtons({
   handleSave,
 }: EditProjectModalContentButtonsProps) {
   return (
-    <div className="flex w-1/2 gap-3">
+    <div className="flex w-2/3 gap-3">
       <PreMadeButtons
         type="cancel"
         text="Cancel"

@@ -29,20 +29,20 @@ function AddTeamModalContentTeamMembers({
 
       {teamMembers.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          {teamMembers.map((teamMember, index) => (
+          {teamMembers.map((teamMember) => (
             <span
-              key={index}
-              className={`relative flex max-w-80 cursor-default items-center justify-center rounded-full border border-primary-100 bg-primary-50 py-2 pl-3 ${disabled ? "pr-3" : "pr-11"}`}
+              key={teamMember.id}
+              className={`relative flex max-w-80 cursor-default items-center justify-center rounded-full border border-gray-200 bg-gray-100 py-1.5 pl-1.5 ${disabled ? "pr-3" : "pr-11"}`}
             >
-              <span className="flex items-center gap-2.5">
+              <span className="flex items-center gap-1.5">
                 <img
                   src={teamMember.avatar_url || placeholderAvatar}
                   alt=""
                   onError={(e) => addDefaultSrc(e, "avatar")}
-                  className="h-5 w-5 rounded-full object-cover object-center"
+                  className="h-6 w-6 rounded-full border border-gray-200 object-cover object-center"
                 />
 
-                <span className="truncate text-xs font-medium tracking-0.1 text-primary-800">
+                <span className="truncate text-xs font-medium tracking-0.1 text-gray-800">
                   {capitalizeAllFirstLetters(teamMember.name!)}
                 </span>
               </span>
@@ -50,7 +50,7 @@ function AddTeamModalContentTeamMembers({
               {!disabled && (
                 <Button
                   onClick={() => handleRemoveTeamMember(teamMember)}
-                  className="absolute right-0 rounded-full border-l border-primary-100 bg-gray-100 p-2.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
+                  className="absolute right-0 rounded-full border-l border-gray-200 bg-white p-2.5 text-gray-700 transition-all duration-100 hover:text-error-700 focus:outline-none"
                 >
                   <Trash size="16" variant="Linear" />
                 </Button>

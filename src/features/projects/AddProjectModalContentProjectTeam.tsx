@@ -13,7 +13,7 @@ function AddProjectModalContentProjectTeam({
   disabled,
 }: AddProjectModalContentProjectTeamProps) {
   return (
-    <div className="flex w-1/2 flex-col gap-3">
+    <div className="flex flex-col gap-3">
       <span className="cursor-default text-sm font-medium tracking-0.1 text-gray-800">
         Team
       </span>

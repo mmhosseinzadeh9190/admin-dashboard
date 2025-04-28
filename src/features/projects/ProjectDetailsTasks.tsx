@@ -92,7 +92,7 @@ function ProjectDetailsTasks({
                       src={assignedUser?.avatar_url || placeholderImage}
                       alt=""
                       onError={(e) => addDefaultSrc(e, "avatar")}
-                      className="h-5 w-5 rounded-full object-cover object-center"
+                      className="h-5 w-5 rounded-full border border-gray-200 object-cover object-center"
                     />
                     <span className="font-roboto text-sm text-gray-500">
                       {assignedUser?.name}

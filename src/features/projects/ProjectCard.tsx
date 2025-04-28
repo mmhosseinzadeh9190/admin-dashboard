@@ -100,7 +100,7 @@ function ProjectCard({ project, fullHeight }: ProjectCardProps) {
         label: "Edit",
         onClick: () => {
           const newSearchParams = new URLSearchParams(searchParams);
-          newSearchParams.set("mode", "edit");
+          newSearchParams.set("edit", "true");
           navigate(`/projects/${project.id}?${newSearchParams.toString()}`);
         },
       },
@@ -223,7 +223,7 @@ function ProjectCard({ project, fullHeight }: ProjectCardProps) {
       </div>
 
       <div className="mt-2 flex items-center gap-2.5">
-        {teamMembers?.slice(0, 4).map((memberId) => {
+        {teamMembers?.slice(0, 5).map((memberId) => {
           const user = users?.data?.find(
             (user) => String(user.id) === memberId,
           );
@@ -233,14 +233,14 @@ function ProjectCard({ project, fullHeight }: ProjectCardProps) {
               src={user?.avatar_url || placeholderAvatar}
               alt={user?.name!}
               onError={(e) => addDefaultSrc(e, "avatar")}
-              className="h-8 w-8 rounded-full object-cover object-center"
+              className="h-8 w-8 rounded-full border border-gray-200 object-cover object-center"
             />
           );
         })}
-        {teamMembers && teamMembers.length > 4 && (
+        {teamMembers && teamMembers.length > 5 && (
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300">
             <span className="mr-px mt-px select-none text-xs text-gray-700">
-              +{teamMembers.length - 4}
+              +{teamMembers.length - 5}
             </span>
           </div>
         )}

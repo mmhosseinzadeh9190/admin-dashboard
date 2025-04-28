@@ -95,7 +95,7 @@ function CustomCalendar() {
                     src={userAvatar}
                     alt=""
                     onError={(e) => addDefaultSrc(e, "avatar")}
-                    className="h-10 w-10 rounded-full object-cover object-center"
+                    className="h-10 w-10 rounded-full border border-gray-200 object-cover object-center"
                   />
                   <div className="flex flex-1 flex-col gap-1">
                     <p className="font-roboto text-sm font-medium tracking-0.1 text-gray-900">

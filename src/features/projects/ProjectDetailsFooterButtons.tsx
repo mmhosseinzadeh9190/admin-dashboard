@@ -38,8 +38,8 @@ function ProjectDetailsFooterButtons({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const param = searchParams.get("mode");
-    if (param && param === "edit") {
+    const param = searchParams.get("edit");
+    if (param && param === "true") {
       handleOpenModal(
         <EditProjectModalContent
           project={project}

@@ -111,7 +111,7 @@ export default {
         "4xl": "56rem",
       },
 
-      height: {
+      maxHeight: {
         xl: "36rem",
       },
 

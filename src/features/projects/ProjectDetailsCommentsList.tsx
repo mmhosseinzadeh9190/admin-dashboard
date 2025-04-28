@@ -133,7 +133,7 @@ function ProjectDetailsCommentsList({
                 src={commentUser?.avatar_url || placeholderAvatar}
                 alt=""
                 onError={(e) => addDefaultSrc(e, "avatar")}
-                className="border-w z-10 h-10 w-10 rounded-full border-4 border-white object-cover object-center"
+                className="z-10 h-10 w-10 rounded-full border-4 border-white object-cover object-center"
               />
               <div className="-ml-5 mt-3.5 flex w-full flex-col gap-2 overflow-hidden rounded-2.5xl bg-gray-100 p-4 pl-7">
                 <div className="flex items-center gap-3">

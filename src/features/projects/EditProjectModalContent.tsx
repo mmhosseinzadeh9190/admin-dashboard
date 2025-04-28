@@ -424,7 +424,7 @@ function EditProjectModalContent({
   };
 
   return (
-    <div className="flex h-xl w-4xl flex-col gap-8">
+    <div className="max-h-xl flex w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Edit Project
@@ -439,7 +439,7 @@ function EditProjectModalContent({
         </Button>
       </div>
 
-      <div className="-mr-8 flex flex-col gap-8 overflow-y-scroll pr-8">
+      <div className="-mr-8 flex flex-col gap-6 overflow-y-scroll pr-7">
         <ModalContentNameInput
           name={projectName}
           setName={setProjectName}
@@ -487,7 +487,7 @@ function EditProjectModalContent({
         />
       </div>
 
-      <div className="mb-2 flex justify-end">
+      <div className="mt-auto flex justify-end">
         <EditProjectModalContentButtons
           onClose={onClose}
           disabled={isSubmitting}

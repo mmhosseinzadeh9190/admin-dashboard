@@ -3,20 +3,23 @@ import Button from "../../ui/Button";
 import { addDefaultSrc, generateUniqueId } from "../../utils/helpers";
 import { useRef, useState } from "react";
 import { Project } from "../../services/apiProjects";
-import { User } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
 import supabase from "../../services/supabase";
 import toast from "react-hot-toast";
 
 interface ProjectDetailsCommentsFormProps {
   project: Project;
-  user: User;
+  supabaseUser: SupabaseUser;
+  users: { data: User[] | null; error: string | null } | undefined;
   onActivitiesUpdated: () => void;
   onProjectUpdated: () => void;
 }
 
 function ProjectDetailsCommentsForm({
   project,
-  user,
+  supabaseUser,
+  users,
   onActivitiesUpdated,
   onProjectUpdated,
 }: ProjectDetailsCommentsFormProps) {
@@ -26,6 +29,10 @@ function ProjectDetailsCommentsForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const placeholderAvatar = "/public/avatarPlaceholder.png";
+
+  const user = users?.data?.find(
+    (user) => String(user.id) === supabaseUser?.id!,
+  );
 
   const handleImageRemove = (index: number) => {
     const updatedImages = selectedImages.filter((_, i) => i !== index);
@@ -175,10 +182,10 @@ function ProjectDetailsCommentsForm({
   return (
     <div className="flex items-start">
       <img
-        src={user?.user_metadata.avatar_url || placeholderAvatar}
+        src={user?.avatar_url || placeholderAvatar}
         alt=""
         onError={(e) => addDefaultSrc(e, "avatar")}
-        className="border-w z-10 h-10 w-10 rounded-full border-4 border-white object-cover object-center"
+        className="z-10 h-10 w-10 rounded-full border-4 border-white object-cover object-center"
       />
       <div className="-ml-5 mt-3.5 flex w-full flex-col gap-2 rounded-2.5xl bg-gray-100 p-4 pl-7">
         <form onSubmit={handleSubmit} className="relative flex flex-col gap-2">

@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Edit, LogoutCurve, Trash } from "iconsax-react";
+import { Add, Edit, LogoutCurve, Trash } from "iconsax-react";
 import CustomDropdown from "../../ui/CustomDropdown";
 import { addDefaultSrc, capitalizeAllFirstLetters } from "../../utils/helpers";
 import { Team } from "../../services/apiTeams";
@@ -11,6 +11,8 @@ import EditTeamModalContent from "./EditTeamModalContent";
 import { Project } from "../../services/apiProjects";
 import { Schedule } from "../../services/apiSchedule";
 import Modal from "../../ui/Modal";
+import Button from "../../ui/Button";
+import AddTeamModalContent from "./AddTeamModalContent";
 
 interface TeamCardProps {
   teams: { data: Team[] | null; error: string | null } | undefined;
@@ -55,7 +57,7 @@ function TeamCard({
 
   return (
     <div className="px-1.5 pb-1.5">
-      {userTeams?.length! > 0 && (
+      {userTeams?.length! > 0 ? (
         <div className="overflow-x-scroll rounded-3xl">
           <div className="flex h-full w-full gap-3 whitespace-nowrap rounded-3xl">
             {userTeams?.map((team) => {
@@ -114,7 +116,7 @@ function TeamCard({
               return (
                 <div
                   key={team.id}
-                  className="flex min-w-96 flex-col gap-5 rounded-2.5xl bg-white p-4 shadow-sm"
+                  className="flex min-h-32 min-w-96 flex-col justify-between rounded-2.5xl bg-white p-4 shadow-sm"
                 >
                   <div className="flex w-full items-start justify-between gap-4">
                     <h3 className="flex items-center gap-3">
@@ -141,7 +143,7 @@ function TeamCard({
                   </div>
 
                   <div className="flex items-center gap-2.5">
-                    {team.members?.slice(0, 7).map((memberId) => {
+                    {team.members?.slice(0, 5).map((memberId) => {
                       const user = users?.data?.find(
                         (user) => String(user.id) === memberId,
                       );
@@ -151,14 +153,14 @@ function TeamCard({
                           src={user?.avatar_url || placeholderAvatar}
                           alt={user?.name!}
                           onError={(e) => addDefaultSrc(e, "avatar")}
-                          className="h-8 w-8 rounded-full object-cover object-center"
+                          className="h-8 w-8 rounded-full border border-gray-200 object-cover object-center"
                         />
                       );
                     })}
-                    {team.members && team.members.length > 7 && (
+                    {team.members && team.members.length > 5 && (
                       <div className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300">
                         <span className="mr-px mt-px select-none text-xs text-gray-700">
-                          +{team.members.length - 7}
+                          +{team.members.length - 5}
                         </span>
                       </div>
                     )}
@@ -168,6 +170,25 @@ function TeamCard({
             })}
           </div>
         </div>
+      ) : (
+        <Button
+          onClick={() =>
+            handleOpenModal(
+              <AddTeamModalContent
+                user={user!}
+                users={users?.data!}
+                onClose={handleCloseModal}
+                onTeamAdded={onTeamUpdated}
+              />,
+            )
+          }
+          className="group flex min-h-32 min-w-96 items-center justify-center rounded-2.5xl border-2 border-dashed border-gray-300 shadow-sm hover:border-gray-400"
+        >
+          <span className="flex items-center gap-1 font-roboto text-lg font-medium tracking-0.1 text-gray-600 group-hover:text-gray-700">
+            <Add size="28" />
+            Add Team
+          </span>
+        </Button>
       )}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {modalContent}

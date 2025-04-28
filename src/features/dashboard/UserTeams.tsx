@@ -1,50 +1,34 @@
 import { ReactNode, useState } from "react";
 import CustomDropdown from "../../ui/CustomDropdown";
 import Modal from "../../ui/Modal";
-import Spinner from "../../ui/Spinner";
-import { useProjects } from "../projects/useProjects";
-import { useSchedules } from "../schedule/useSchedules";
 import TeamCard from "./TeamCard";
-import { useTeams } from "./useTeams";
-import { useUsers } from "./useUsers";
 import { AddSquare } from "iconsax-react";
 import AddTeamModalContent from "./AddTeamModalContent";
-import { useUser } from "../authentication/useUser";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
+import { Team } from "../../services/apiTeams";
+import { Project } from "../../services/apiProjects";
+import { Schedule } from "../../services/apiSchedule";
 
-function UserTeams() {
+type UserTeamsProps = {
+  user: SupabaseUser;
+  users: { data: User[] | null; error: string | null };
+  teams: { data: Team[] | null; error: string | null };
+  projects: { data: Project[] | null; error: string | null };
+  schedules: { data: Schedule[] | null; error: string | null };
+  teamsRefetch: () => void;
+};
+
+function UserTeams({
+  user,
+  users,
+  teams,
+  projects,
+  schedules,
+  teamsRefetch,
+}: UserTeamsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
-
-  const { user } = useUser();
-
-  const {
-    teams,
-    isLoading: teamsIsLoading,
-    error: teamsError,
-    refetch: teamsRefetch,
-  } = useTeams();
-
-  const { users, isLoading: usersIsLoading, error: usersError } = useUsers();
-
-  const {
-    projects,
-    isLoading: projectsIsLoading,
-    error: projectsError,
-  } = useProjects();
-
-  const {
-    schedules,
-    isLoading: schedulesIsLoading,
-    error: schedulesError,
-  } = useSchedules();
-
-  if (
-    teamsIsLoading ||
-    usersIsLoading ||
-    projectsIsLoading ||
-    schedulesIsLoading
-  )
-    return <Spinner />;
 
   const handleOpenModal = (content: ReactNode) => {
     setModalContent(content);

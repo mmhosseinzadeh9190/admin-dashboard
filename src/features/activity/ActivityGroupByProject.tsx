@@ -1,16 +1,19 @@
 import { Activity } from "../../services/apiActivity";
 import { Project } from "../../services/apiProjects";
+import { User } from "../../services/apiUsers";
 import { capitalizeFirstLetter } from "../../utils/helpers";
 import ActivityGroup from "./ActivityGroup";
 
 interface ActivityGroupByProjectProps {
-  activities: { data: Activity[] | null; error: string | null };
-  projects: { data: Project[] | null; error: string | null };
+  activities: Activity[];
+  projects: Project[];
+  users: User[];
 }
 
 function ActivityGroupByProject({
   activities,
   projects,
+  users,
 }: ActivityGroupByProjectProps) {
   const groupActivitiesByProject = (
     activities: Activity[],
@@ -31,10 +34,7 @@ function ActivityGroupByProject({
     );
   };
 
-  const groupedActivities = groupActivitiesByProject(
-    activities.data!,
-    projects.data!,
-  );
+  const groupedActivities = groupActivitiesByProject(activities, projects);
 
   return (
     <>
@@ -46,6 +46,8 @@ function ActivityGroupByProject({
             key={projectName}
             title={capitalizeFirstLetter(projectName)}
             activities={groupedActivities[projectName]}
+            projects={projects}
+            users={users}
           />
         );
       })}

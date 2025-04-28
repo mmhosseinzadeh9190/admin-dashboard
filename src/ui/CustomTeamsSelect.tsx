@@ -9,7 +9,6 @@ import { ArrowDown2 } from "iconsax-react";
 import { addDefaultSrc, capitalizeAllFirstLetters } from "../utils/helpers";
 import { iconColor } from "../styles/GlobalStyles";
 import { Team } from "../services/apiTeams";
-import { useNavigate } from "react-router-dom";
 
 interface CustomTeamsSelectProps {
   teams: Team[] | undefined;
@@ -23,19 +22,11 @@ function CustomTeamsSelect({
   disabled,
 }: CustomTeamsSelectProps) {
   const [selected, setSelected] = useState(teams![0]);
-  const navigate = useNavigate();
-
   const placeholderImage = "/public/imagePlaceholder.png";
 
   const handleChange = (team: Team) => {
     setSelected(team);
     onTeamSelect(team);
-  };
-
-  const handleLinkClick = () => {
-    const searchParams = new URLSearchParams();
-    searchParams.set("mode", "create-team");
-    navigate(`/dashboard?${searchParams.toString()}`);
   };
 
   return (
@@ -95,14 +86,7 @@ function CustomTeamsSelect({
         </Listbox>
       ) : (
         <p className="rounded-lg border border-gray-200 bg-gray-100 px-3 py-2 font-roboto text-sm tracking-0.1 text-gray-800">
-          You do not currently have a team. Please follow this{" "}
-          <span
-            onClick={handleLinkClick}
-            className="cursor-pointer font-medium text-primary-800 hover:text-primary-900 hover:underline"
-          >
-            link
-          </span>{" "}
-          to create your own team.
+          You currently don't have any teams. Please create your own team first.
         </p>
       )}
     </div>

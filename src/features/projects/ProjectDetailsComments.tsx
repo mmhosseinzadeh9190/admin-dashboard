@@ -34,7 +34,8 @@ function ProjectDetailsComments({
 
       <ProjectDetailsCommentsForm
         project={project}
-        user={user}
+        supabaseUser={user}
+        users={users}
         onActivitiesUpdated={onActivitiesUpdated}
         onProjectUpdated={onProjectUpdated}
       />

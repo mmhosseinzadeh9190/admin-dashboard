@@ -120,3 +120,31 @@ export const logout = async () => {
 
   if (error) throw new Error(error.message);
 };
+
+export const insertUser = async (user: any) => {
+  const avatarPlaceholderUrl =
+    "https://grrbotnrdjqbvjpugvan.supabase.co/storage/v1/object/public/avatars/user-placeholder.png";
+
+  const userNamePlaceholder = `user-${user.id.split("-")[0]}`;
+
+  const { data, error } = await supabase
+    .from("users")
+    .insert([
+      {
+        id: user.id,
+        name: user.user_metadata.name || userNamePlaceholder,
+        email: user.email,
+        avatar_url: user.user_metadata.avatar_url || avatarPlaceholderUrl,
+        user_roles: user.user_metadata.user_roles || ["user"],
+        is_online: user.user_metadata.is_online || false,
+        last_login: user.last_sign_in_at,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      },
+    ])
+    .select();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};

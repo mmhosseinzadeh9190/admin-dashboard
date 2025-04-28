@@ -1,31 +1,27 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun1 } from "iconsax-react";
 import Button from "./Button";
+import { getUserDefaultTheme } from "../utils/helpers";
 
 const DarkModeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
+    if (savedTheme === "auto") {
+      const defaultTheme = getUserDefaultTheme();
+      setIsDarkMode(defaultTheme === "dark" ? true : false);
     } else {
-      document.documentElement.classList.remove("dark");
+      setIsDarkMode(savedTheme === "dark" ? true : false);
     }
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = !isDarkMode ? "dark" : "light";
+    const newTheme = isDarkMode ? "light" : "dark";
     setIsDarkMode(!isDarkMode);
 
+    document.documentElement.classList = newTheme;
     localStorage.setItem("theme", newTheme);
-
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   };
 
   return (
@@ -34,9 +30,9 @@ const DarkModeToggle = () => {
       className="flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200 hover:bg-gray-100"
     >
       {isDarkMode ? (
-        <Sun1 size="20" color="#6a0dad" variant="Linear" />
+        <Sun1 size="20" className="text-primary-800" />
       ) : (
-        <Moon size="20" color="#6a0dad" variant="Linear" />
+        <Moon size="20" className="text-primary-800" />
       )}
     </Button>
   );

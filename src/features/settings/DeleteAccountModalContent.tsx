@@ -6,14 +6,16 @@ import { logout, signInWithPassword } from "../../services/apiAuth";
 import toast from "react-hot-toast";
 import supabase, { supabaseServiceRole } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
-import { User } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
 import { Activity } from "../../services/apiActivity";
 import { Team } from "../../services/apiTeams";
 import { getProject, Project } from "../../services/apiProjects";
 import { useQueryClient } from "@tanstack/react-query";
 
 type DeleteAccountModalContentProps = {
-  user: User | null | undefined;
+  supabaseUser: SupabaseUser | null | undefined;
+  user: User;
   activities: { data: Activity[] | null; error: string | null };
   teams: { data: Team[] | null; error: string | null };
   projects: { data: Project[] | null; error: string | null };
@@ -21,6 +23,7 @@ type DeleteAccountModalContentProps = {
 };
 
 function DeleteAccountModalContent({
+  supabaseUser,
   user,
   activities,
   teams,
@@ -36,13 +39,17 @@ function DeleteAccountModalContent({
   const queryClient = useQueryClient();
 
   const userActivities =
-    activities?.data?.filter((activity) => activity.user_id === user?.id) || [];
+    activities?.data?.filter(
+      (activity) => activity.user_id === String(user?.id),
+    ) || [];
 
   const userProjects =
-    projects?.data?.filter((project) => project.created_by === user?.id) || [];
+    projects?.data?.filter(
+      (project) => project.created_by === String(user?.id),
+    ) || [];
 
   const userCreatedTeams =
-    teams?.data?.filter((team) => team.leader_id === user?.id) || [];
+    teams?.data?.filter((team) => team.leader_id === String(user?.id)) || [];
 
   const userTeams =
     teams?.data?.filter((team) => team.members?.includes(String(user?.id))) ||
@@ -55,6 +62,18 @@ function DeleteAccountModalContent({
   const activitiesWithTaskType = userActivities.filter(
     (activity) => activity.type === "task",
   );
+
+  const providers = ["facebook", "twitter", "github"];
+
+  const userProvider = supabaseUser?.app_metadata.provider!;
+
+  const isProviderEmail = !providers.includes(userProvider);
+
+  let disableDelete: boolean;
+
+  isProviderEmail
+    ? (disableDelete = email === "" || password === "" || !deleteAccount)
+    : (disableDelete = email === "" || !deleteAccount);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -151,10 +170,11 @@ function DeleteAccountModalContent({
             throw new Error(storageDeleteError.message);
           }
         });
-        const filteredAttachments = project.data?.attachments?.filter(
-          (a) => !activity.content?.includes(a),
-        );
-        const updatedAttachments = [...filteredAttachments!];
+        const filteredAttachments =
+          project.data?.attachments?.filter(
+            (a) => !activity.content?.includes(a),
+          ) || [];
+        const updatedAttachments = [...filteredAttachments];
         const { error: projectUpdateError } = await supabase
           .from("projects")
           .update({ attachments: updatedAttachments })
@@ -167,8 +187,9 @@ function DeleteAccountModalContent({
       activitiesWithTaskType.map(async (activity) => {
         const project = await getProject(String(activity.project_id));
         const task = activity.content?.at(0);
-        const filteredTasks = project.data?.tasks?.filter((t) => t !== task);
-        const updatedTasks = [...filteredTasks!];
+        const filteredTasks =
+          project.data?.tasks?.filter((t) => t !== task) || [];
+        const updatedTasks = [...filteredTasks];
         const { error: tasksUpdateError } = await supabase
           .from("projects")
           .update({ tasks: updatedTasks })
@@ -210,7 +231,7 @@ function DeleteAccountModalContent({
 
       userTeams.map(async (team) => {
         const filteredTeamMembers =
-          team.members?.filter((member) => member !== user?.id) || [];
+          team.members?.filter((member) => member !== String(user?.id)) || [];
         const { error: updateTeamError } = await supabase
           .from("teams")
           .update({
@@ -230,12 +251,12 @@ function DeleteAccountModalContent({
   const handleDeleteUser = async () => {
     try {
       if (
-        user?.user_metadata.avatar_url !==
+        user.avatar_url !==
         "https://grrbotnrdjqbvjpugvan.supabase.co/storage/v1/object/public/avatars//user-placeholder.png"
       ) {
         const { error: storageDeleteError } = await supabase.storage
           .from("avatars")
-          .remove([`${user?.user_metadata.avatar_url.split("/").pop()}`]);
+          .remove([`${user.avatar_url?.split("/").pop()}`]);
         if (storageDeleteError) {
           throw new Error(storageDeleteError.message);
         }
@@ -259,18 +280,20 @@ function DeleteAccountModalContent({
       setIsSubmitting(true);
 
       if (email !== user?.email) {
-        toast.error("Provided email or password are incorrect.");
+        toast.error("Provided email is incorrect.");
         return;
       }
 
-      try {
-        await signInWithPassword({
-          email,
-          password,
-        });
-      } catch (error) {
-        toast.error("Provided email or password are incorrect.");
-        return;
+      if (userProvider === "email") {
+        try {
+          await signInWithPassword({
+            email,
+            password,
+          });
+        } catch (error) {
+          toast.error("Provided email or password are incorrect.");
+          return;
+        }
       }
 
       if (userProjects.length > 0) {
@@ -290,7 +313,7 @@ function DeleteAccountModalContent({
       await handleDeleteUser();
 
       const { error } = await supabaseServiceRole.auth.admin.deleteUser(
-        user.id,
+        String(user?.id),
       );
       if (error) {
         throw new Error(error.message);
@@ -309,8 +332,6 @@ function DeleteAccountModalContent({
       setIsSubmitting(false);
     }
   };
-
-  const disableDelete = email === "" || password === "" || !deleteAccount;
 
   return (
     <form className="flex w-xl flex-col gap-6" onSubmit={handleDeleteAccount}>
@@ -342,9 +363,9 @@ function DeleteAccountModalContent({
             This is extremely important.
           </span>
         </div>
-        <p className="font-roboto text-sm font-medium tracking-0.1 text-gray-800">
-          We will <strong>immediately delete all of your projects ({})</strong>,
-          along with all of your teams, tasks and activities.
+        <p className="font-roboto text-sm font-semibold tracking-0.1 text-gray-800">
+          We will immediately delete all of your projects, along with all of
+          your teams, tasks and activities.
         </p>
 
         <div className="flex flex-col gap-2.5 border-y border-gray-200 py-4">
@@ -368,36 +389,38 @@ function DeleteAccountModalContent({
               required
             />
           </div>
-          <div className="relative flex flex-col gap-1">
-            <label
-              htmlFor="password"
-              className="font-roboto text-sm tracking-0.1 text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              autoComplete="off"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isSubmitting}
-              className="w-full rounded-xl border border-gray-200 bg-gray-100 py-2.5 pl-3.5 pr-11 font-roboto text-sm tracking-0.1 text-gray-800 placeholder:font-light placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
-              placeholder="Enter your password"
-              required
-            />
-            <Button
-              onClick={togglePasswordVisibility}
-              className="absolute bottom-3 right-3.5 focus:outline-none"
-            >
-              {showPassword ? (
-                <EyeSlash size="16" className="text-gray-600" />
-              ) : (
-                <Eye size="16" className="text-gray-600" />
-              )}
-            </Button>
-          </div>
+          {isProviderEmail && (
+            <div className="relative flex flex-col gap-1">
+              <label
+                htmlFor="password"
+                className="font-roboto text-sm tracking-0.1 text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                autoComplete="off"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isSubmitting}
+                className="w-full rounded-xl border border-gray-200 bg-gray-100 py-2.5 pl-3.5 pr-11 font-roboto text-sm tracking-0.1 text-gray-800 placeholder:font-light placeholder:text-gray-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-200"
+                placeholder="Enter your password"
+                required
+              />
+              <Button
+                onClick={togglePasswordVisibility}
+                className="absolute bottom-3 right-3.5 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeSlash size="16" className="text-gray-600" />
+                ) : (
+                  <Eye size="16" className="text-gray-600" />
+                )}
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="flex items-start gap-2">

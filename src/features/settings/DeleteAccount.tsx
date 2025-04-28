@@ -4,19 +4,22 @@ import { LogoutCurve } from "iconsax-react";
 import { useLogout } from "../authentication/useLogout";
 import Modal from "../../ui/Modal";
 import DeleteAccountModalContent from "./DeleteAccountModalContent";
-import { User } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
 import { Activity } from "../../services/apiActivity";
 import { Team } from "../../services/apiTeams";
 import { Project } from "../../services/apiProjects";
 
 type DeleteAccountProps = {
-  user: User | null | undefined;
+  supabaseUser: SupabaseUser | null | undefined;
+  user: User;
   activities: { data: Activity[] | null; error: string | null };
   teams: { data: Team[] | null; error: string | null };
   projects: { data: Project[] | null; error: string | null };
 };
 
 function DeleteAccount({
+  supabaseUser,
   user,
   activities,
   teams,
@@ -62,6 +65,7 @@ function DeleteAccount({
               onClick={() =>
                 handleOpenModal(
                   <DeleteAccountModalContent
+                    supabaseUser={supabaseUser}
                     user={user}
                     activities={activities!}
                     teams={teams!}

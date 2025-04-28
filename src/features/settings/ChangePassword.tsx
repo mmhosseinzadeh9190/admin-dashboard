@@ -4,14 +4,14 @@ import { Eye, EyeSlash, TickSquare } from "iconsax-react";
 import toast from "react-hot-toast";
 import supabase from "../../services/supabase";
 import { signInWithPassword } from "../../services/apiAuth";
-import { User } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
 
 type ChangePasswordProps = {
-  user: User | null | undefined;
-  userRefetch: () => void;
+  user: User;
+  usersRefetch: () => void;
 };
 
-function ChangePassword({ user, userRefetch }: ChangePasswordProps) {
+function ChangePassword({ user, usersRefetch }: ChangePasswordProps) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
@@ -20,7 +20,7 @@ function ChangePassword({ user, userRefetch }: ChangePasswordProps) {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const email = user?.email!;
+  const email = user.email!;
   const disableButton =
     (currentPassword && newPassword && confirmNewPassword) === "";
 
@@ -69,7 +69,7 @@ function ChangePassword({ user, userRefetch }: ChangePasswordProps) {
       }
 
       toast.success("Password updated successfully!");
-      userRefetch();
+      usersRefetch();
     } catch (error) {
       toast.error("Failed to update Password. Please try again.");
     } finally {

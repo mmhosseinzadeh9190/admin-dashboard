@@ -5,24 +5,25 @@ import { Add, Trash } from "iconsax-react";
 import PreMadeButtons from "../../ui/PreMadeButtons";
 import toast from "react-hot-toast";
 import supabase from "../../services/supabase";
-import { User } from "@supabase/supabase-js";
+import { User } from "../../services/apiUsers";
 
 type ProfileSettingsProps = {
-  user: User | null | undefined;
-  userRefetch: () => void;
+  user: User;
+  usersRefetch: () => void;
 };
 
-function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
-  const currentAvatar = user?.user_metadata.avatar_url;
-  const currentName = capitalizeAllFirstLetters(user?.user_metadata.name);
+function ProfileSettings({ user, usersRefetch }: ProfileSettingsProps) {
+  const currentAvatar = user.avatar_url;
+  const currentName = capitalizeAllFirstLetters(user.name!);
   const [avatar, setAvatar] = useState<string | null>(currentAvatar);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [name, setName] = useState<string>(currentName || "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const userId = String(user.id);
 
   const disableButton =
-    avatar === currentAvatar && (name === currentName || name === "");
+    (avatar === currentAvatar && name === currentName) || name === "";
 
   const placeholder = "/public/avatarPlaceholder.png";
 
@@ -60,12 +61,21 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
 
   const handleUpdateName = async () => {
     try {
-      const { error } = await supabase.auth.updateUser({
+      const { error: supabaseError } = await supabase.auth.updateUser({
         data: { name: name },
       });
+      if (supabaseError) {
+        throw new Error(supabaseError.message);
+      }
+
+      const { error } = await supabase
+        .from("users")
+        .update({ name: name })
+        .eq("id", userId);
       if (error) {
         throw new Error(error.message);
       }
+
       setName(name);
     } catch (error) {
       throw new Error();
@@ -74,12 +84,21 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
 
   const handleUpdateAvatar = async (avatarUrl: string) => {
     try {
-      const { error } = await supabase.auth.updateUser({
+      const { error: supabaseError } = await supabase.auth.updateUser({
         data: { avatar_url: avatarUrl },
       });
+      if (supabaseError) {
+        throw new Error(supabaseError.message);
+      }
+
+      const { error } = await supabase
+        .from("users")
+        .update({ avatar_url: avatarUrl })
+        .eq("id", userId);
       if (error) {
         throw new Error(error.message);
       }
+
       setAvatar(avatarUrl);
     } catch (error) {
       throw new Error();
@@ -90,7 +109,7 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
     const uploadResult = await handleImageUpload(avatarFile!);
 
     if (uploadResult && uploadResult.publicUrl) {
-      handleUpdateAvatar(uploadResult.publicUrl);
+      await handleUpdateAvatar(uploadResult.publicUrl);
     } else {
       throw new Error();
     }
@@ -98,12 +117,12 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
 
   const handleDeleteAvatarFromDatabase = async () => {
     if (
-      avatar !==
+      currentAvatar !==
       "https://grrbotnrdjqbvjpugvan.supabase.co/storage/v1/object/public/avatars//user-placeholder.png"
     ) {
       const { error: storageDeleteError } = await supabase.storage
         .from("avatars")
-        .remove([`${avatar?.split("/").pop()}`]);
+        .remove([`${currentAvatar?.split("/").pop()}`]);
 
       if (storageDeleteError) {
         throw new Error(storageDeleteError.message);
@@ -112,7 +131,7 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
       const avatarPlaceholder =
         "https://grrbotnrdjqbvjpugvan.supabase.co/storage/v1/object/public/avatars//user-placeholder.png";
 
-      handleUpdateAvatar(avatarPlaceholder);
+      await handleUpdateAvatar(avatarPlaceholder);
     }
   };
 
@@ -120,11 +139,13 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
     try {
       setIsSubmitting(true);
 
-      if (avatar !== currentAvatar) {
+      if (!avatar) {
         await handleDeleteAvatarFromDatabase();
-        if (avatarFile) {
-          await handleAddAvatarToDatabase();
-        }
+      }
+
+      if (avatarFile && avatar !== currentAvatar) {
+        await handleDeleteAvatarFromDatabase();
+        await handleAddAvatarToDatabase();
       }
 
       if (name !== currentName) {
@@ -132,7 +153,7 @@ function ProfileSettings({ user, userRefetch }: ProfileSettingsProps) {
       }
 
       toast.success("Profile updated successfully!");
-      userRefetch();
+      usersRefetch();
     } catch (error) {
       toast.error("Failed to update profile. Please try again.");
     } finally {

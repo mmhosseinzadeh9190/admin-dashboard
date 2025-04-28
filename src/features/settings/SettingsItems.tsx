@@ -2,6 +2,7 @@ import Spinner from "../../ui/Spinner";
 import { useActivity } from "../activity/useActivity";
 import { useUser } from "../authentication/useUser";
 import { useTeams } from "../dashboard/useTeams";
+import { useUsers } from "../dashboard/useUsers";
 import { useProjects } from "../projects/useProjects";
 import ChangePassword from "./ChangePassword";
 import DeleteAccount from "./DeleteAccount";
@@ -9,15 +10,15 @@ import ProfileSettings from "./ProfileSettings";
 import SocialMedia from "./SocialMedia";
 import ThemePreferences from "./ThemePreferences";
 
-type Props = {};
+function SettingsItems() {
+  const { user: supabaseUser } = useUser();
 
-function SettingsItems({}: Props) {
   const {
-    user,
-    isLoading: userIsLoading,
-    error: userError,
-    refetch: userRefetch,
-  } = useUser();
+    users,
+    isLoading: usersIsLoading,
+    error: usersError,
+    refetch: usersRefetch,
+  } = useUsers();
 
   const {
     activities,
@@ -33,8 +34,12 @@ function SettingsItems({}: Props) {
     error: projectsError,
   } = useProjects();
 
+  const user = users?.data?.find(
+    (user) => String(user.id) === supabaseUser?.id!,
+  );
+
   if (
-    userIsLoading ||
+    usersIsLoading ||
     activitiesIsLoading ||
     teamsIsLoading ||
     projectsIsLoading
@@ -44,12 +49,13 @@ function SettingsItems({}: Props) {
   return (
     <div className="flex flex-col gap-4 pb-8">
       <div className="flex gap-4">
-        <ProfileSettings user={user} userRefetch={userRefetch} />
-        <ChangePassword user={user} userRefetch={userRefetch} />
+        <ProfileSettings user={user!} usersRefetch={usersRefetch} />
+        <ChangePassword user={user!} usersRefetch={usersRefetch} />
       </div>
       <ThemePreferences />
       <DeleteAccount
-        user={user}
+        supabaseUser={supabaseUser}
+        user={user!}
         activities={activities!}
         teams={teams!}
         projects={projects!}

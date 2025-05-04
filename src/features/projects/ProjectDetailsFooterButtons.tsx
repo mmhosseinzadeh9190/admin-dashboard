@@ -21,6 +21,7 @@ interface ProjectDetailsFooterButtonsProps {
   user: SupabaseUser;
   onProjectUpdated: () => void;
   onScheduleUpdated: () => void;
+  onActivitiesUpdated: () => void;
 }
 
 function ProjectDetailsFooterButtons({
@@ -31,6 +32,7 @@ function ProjectDetailsFooterButtons({
   user,
   onProjectUpdated,
   onScheduleUpdated,
+  onActivitiesUpdated,
 }: ProjectDetailsFooterButtonsProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
@@ -49,6 +51,7 @@ function ProjectDetailsFooterButtons({
           onClose={handleCloseModal}
           onProjectUpdated={onProjectUpdated}
           onScheduleUpdated={onScheduleUpdated}
+          onActivitiesUpdated={onActivitiesUpdated}
         />,
       );
     }
@@ -132,6 +135,7 @@ function ProjectDetailsFooterButtons({
                   onClose={handleCloseModal}
                   onProjectUpdated={onProjectUpdated}
                   onScheduleUpdated={onScheduleUpdated}
+                  onActivitiesUpdated={onActivitiesUpdated}
                 />,
               )
             }

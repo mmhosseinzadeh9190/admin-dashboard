@@ -69,7 +69,7 @@ function CustomCalendar() {
         }}
         events={events}
         eventClick={(info) => {
-          const eventTitle = capitalizeFirstLetter(info.event.title);
+          const eventTitle = info.event.title;
           const eventSchedule = schedules?.data?.find(
             (schedule) => schedule.task === eventTitle,
           );
@@ -79,11 +79,11 @@ function CustomCalendar() {
           const eventProject = projects?.data?.find(
             (project) => project.id === eventSchedule?.project_id,
           );
-          const name = capitalizeAllFirstLetters(user?.name!) || "Unknown User";
+          const name = user?.name || `user-${String(user?.id).split("-")[0]}`;
           const placeholder = "/public/avatarPlaceholder.png";
           const userAvatar = user?.avatar_url || placeholder;
           const projectName =
-            capitalizeAllFirstLetters(eventProject?.name!) || "Unnamed Project";
+            eventProject?.name || `Project-${eventProject?.id}`;
 
           toast.custom((t) => (
             <div
@@ -99,13 +99,13 @@ function CustomCalendar() {
                   />
                   <div className="flex flex-1 flex-col gap-1">
                     <p className="font-roboto text-sm font-medium tracking-0.1 text-gray-900">
-                      {name}
+                      {capitalizeAllFirstLetters(name)}
                     </p>
                     <p className="font-roboto text-xs tracking-0.1 text-gray-600">
-                      {projectName}
+                      {capitalizeAllFirstLetters(projectName)}
                     </p>
                     <p className="font-roboto text-sm tracking-0.1 text-gray-700">
-                      {eventTitle}
+                      {capitalizeFirstLetter(eventTitle)}
                     </p>
                   </div>
                 </div>

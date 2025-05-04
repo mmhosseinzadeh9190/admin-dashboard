@@ -86,6 +86,7 @@ function ProjectDetails() {
         user={user!}
         onProjectUpdated={projectRefetch}
         onScheduleUpdated={scheduleRefetch}
+        onActivitiesUpdated={activitiesRefetch}
       />
     </div>
   );

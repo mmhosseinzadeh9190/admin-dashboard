@@ -23,6 +23,7 @@ interface EditProjectModalContentProps {
   onClose: () => void;
   onProjectUpdated: () => void;
   onScheduleUpdated: () => void;
+  onActivitiesUpdated: () => void;
 }
 
 function EditProjectModalContent({
@@ -33,6 +34,7 @@ function EditProjectModalContent({
   onClose,
   onProjectUpdated,
   onScheduleUpdated,
+  onActivitiesUpdated,
 }: EditProjectModalContentProps) {
   const teamMembers = teams?.data?.find(
     (team) => team.id === project.team,
@@ -59,6 +61,7 @@ function EditProjectModalContent({
   const [completedTasks, setCompletedTasks] = useState<string[]>(
     project.tasks_done || [],
   );
+  const [deletedTasks, setDeletedTasks] = useState<string[]>([]);
   const [newTask, setNewTask] = useState("");
   const [newTaskActivity, setNewTaskActivity] = useState<any[]>([]);
   const [tags, setTags] = useState(project.tags || []);
@@ -257,6 +260,7 @@ function EditProjectModalContent({
     setTasks((prevTasks) => prevTasks.filter((t) => t !== task));
     setCompletedTasks(completedTasks.filter((t) => t !== task));
     setSavedTasks((prevTasks) => prevTasks.filter((t) => t !== task));
+    setDeletedTasks([...deletedTasks, task]);
   };
 
   const handleAddTask = () => {
@@ -289,6 +293,7 @@ function EditProjectModalContent({
     setTasks((prevTasks) => prevTasks.filter((t) => t !== task));
     setCompletedTasks(completedTasks.filter((t) => t !== task));
     setNewTaskActivity((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    setDeletedTasks([...deletedTasks, task]);
   };
 
   const handleInsertTask = async (task: any[]) => {
@@ -329,6 +334,34 @@ function EditProjectModalContent({
     }
 
     onScheduleUpdated();
+    onActivitiesUpdated();
+  };
+
+  const handleDeleteTaskFromDatabase = async (
+    task: string,
+    projectId: number,
+  ) => {
+    const { error: taskDeleteError } = await supabase
+      .from("activities")
+      .delete()
+      .eq("project_id", projectId)
+      .contains("content", [task]);
+
+    if (taskDeleteError) {
+      throw new Error(taskDeleteError.message);
+    }
+
+    const { error: scheduleDeleteError } = await supabase
+      .from("schedules")
+      .delete()
+      .eq("project_id", projectId)
+      .eq("task", task);
+
+    if (scheduleDeleteError) {
+      throw new Error(scheduleDeleteError.message);
+    }
+
+    onActivitiesUpdated();
   };
 
   const handleRemoveTag = (tag: string) => {
@@ -371,14 +404,13 @@ function EditProjectModalContent({
         tags,
       };
 
-      const { error: projectActivityUpdateError } = await supabase
+      const { error: projectUpdateError } = await supabase
         .from("projects")
         .update(updatedProject)
-        .eq("id", project.id)
-        .select();
+        .eq("id", project.id);
 
-      if (projectActivityUpdateError) {
-        throw new Error(projectActivityUpdateError.message);
+      if (projectUpdateError) {
+        throw new Error(projectUpdateError.message);
       }
 
       for (const attachment of deletedAttachments) {
@@ -413,6 +445,14 @@ function EditProjectModalContent({
         }
       }
 
+      for (const task of deletedTasks) {
+        try {
+          await handleDeleteTaskFromDatabase(task, project.id);
+        } catch (error) {
+          throw new Error();
+        }
+      }
+
       toast.success("Project updated successfully!");
       onProjectUpdated();
       onClose();
@@ -424,7 +464,7 @@ function EditProjectModalContent({
   };
 
   return (
-    <div className="max-h-xl flex w-xl flex-col gap-6">
+    <div className="flex max-h-xl w-xl flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="font-roboto text-xl font-medium tracking-0.1 text-gray-900">
           Edit Project

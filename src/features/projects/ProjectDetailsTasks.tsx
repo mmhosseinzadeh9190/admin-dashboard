@@ -6,6 +6,7 @@ import { Schedule } from "../../services/apiSchedule";
 import { User } from "../../services/apiUsers";
 import {
   addDefaultSrc,
+  capitalizeFirstLetter,
   formatISODateToCustomFormat,
 } from "../../utils/helpers";
 import toast from "react-hot-toast";
@@ -73,7 +74,7 @@ function ProjectDetailsTasks({
                   aria-label="checkbox"
                   checked={isChecked}
                   onClick={handleCheckboxClick}
-                  className="h-3.5 w-5 accent-success-600 focus:outline-none"
+                  className="-mt-px h-3.5 w-5 accent-success-600 focus:outline-none"
                   readOnly
                 />
                 <div className="flex w-full items-center gap-2.5 overflow-hidden">
@@ -81,7 +82,7 @@ function ProjectDetailsTasks({
                     htmlFor={`task-checkbox-${index}`}
                     className="max-w-3xl truncate font-roboto tracking-0.1 text-gray-800"
                   >
-                    {task}
+                    {capitalizeFirstLetter(task)}
                   </label>
                   <span className="flex items-center gap-1 font-roboto text-sm tracking-0.1 text-gray-600">
                     <Calendar size="16" variant="Linear" />

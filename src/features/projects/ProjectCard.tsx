@@ -70,19 +70,16 @@ function ProjectCard({ project, fullHeight }: ProjectCardProps) {
   const deadlineText = daysLeft < 0 ? "days past" : "days left";
 
   let textColor = "text-gray-700",
-    bgColor = "bg-gray-200",
-    iconClockColor = "#696974";
+    bgColor = "bg-gray-200";
 
   if (daysLeft <= 7) {
     textColor = "text-warning-600";
     bgColor = "bg-warning-50";
-    iconClockColor = "#FF7F00";
   }
 
   if (daysLeft <= 3) {
     textColor = "text-error-600";
     bgColor = "bg-error-50";
-    iconClockColor = "#ed1515";
   }
 
   const dropdownItems = [
@@ -207,7 +204,7 @@ function ProjectCard({ project, fullHeight }: ProjectCardProps) {
           <span
             className={`flex items-center gap-1 rounded-md ${bgColor} ${textColor} px-1.5 py-1 font-roboto text-sm tracking-0.1`}
           >
-            <Clock size="16" color={iconClockColor} variant="Linear" />
+            <Clock size="16" />
             {`${Math.abs(daysLeft)} ${deadlineText}`}
           </span>
         )}

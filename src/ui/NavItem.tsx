@@ -12,7 +12,7 @@ function NavItem({ to, icon, label }: NavItemProps) {
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `group flex items-center gap-3 rounded-lg px-5 py-3 text-base/4 font-medium tracking-0.1 hover:bg-gray-100 hover:text-gray-800 focus:outline-none ${isActive ? "bg-gray-100 text-gray-800" : "text-gray-700"}`
+          `group flex items-center gap-3 rounded-lg px-5 py-3 text-base/4 font-medium tracking-0.1 hover:bg-gray-200 hover:text-gray-800 focus:outline-none ${isActive ? "bg-gray-200 text-gray-800" : "text-gray-700"}`
         }
       >
         {({ isActive }) => (

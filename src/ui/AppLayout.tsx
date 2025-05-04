@@ -7,6 +7,8 @@ import { useUser } from "../features/authentication/useUser";
 import Spinner from "./Spinner";
 import { User } from "../services/apiUsers";
 import { insertUser } from "../services/apiAuth";
+import { useActivity } from "../features/activity/useActivity";
+import { useProjects } from "../features/projects/useProjects";
 
 function AppLayout() {
   const {
@@ -15,6 +17,20 @@ function AppLayout() {
     error: usersError,
     refetch: usersRefetch,
   } = useUsers();
+
+  const {
+    activities,
+    isLoading: activitiesIsLoading,
+    error: activitiesError,
+    refetch: activitiesRefetch,
+  } = useActivity();
+
+  const {
+    projects,
+    isLoading: projectsIsLoading,
+    error: projectsError,
+    refetch: projectsRefetch,
+  } = useProjects();
 
   const { user: supabaseUser, isLoading: userIsLoading } = useUser();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -67,7 +83,13 @@ function AppLayout() {
     usersRefetch,
   ]);
 
-  if (usersIsLoading || userIsLoading || isInsertingUser) {
+  if (
+    usersIsLoading ||
+    activitiesIsLoading ||
+    projectsIsLoading ||
+    userIsLoading ||
+    isInsertingUser
+  ) {
     return (
       <div className="h-dvh w-dvw">
         <Spinner />
@@ -78,7 +100,13 @@ function AppLayout() {
   return (
     currentUser && (
       <div className="grid h-dvh grid-cols-[max-content_1fr] grid-rows-[auto_1fr]">
-        <Header user={currentUser} />
+        <Header
+          user={currentUser}
+          activities={activities?.data!}
+          projects={projects?.data!}
+          onActivitiesUpdated={activitiesRefetch}
+          onProjectsUpdated={projectsRefetch}
+        />
         <Sidebar />
         <Main />
       </div>
